@@ -1,14 +1,17 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const http = require("http").Server(app);
-const io = require("socket.io");
-const uuidv1 = require("uuid/v1");
-const shit = require("./events.js");
+const io = require("socket.io")(http);
+const uuid = require("uuid/v1");
+const ns = require("./ns_events.js");
 
-app.get("/", function(req, res){
-	res.send("<h1>hello world</h1>");
+app.use(express.static("public"));
+io.on("connection", function(socket){
+	socket.on("newGame", function(){
+		socket.emit("newGame", initGame());
+	});
 });
 
-
 http.listen(8080, function(){
-	shit.sauce("listening to 8080");
+	console.log("listening to 8080");
 });
