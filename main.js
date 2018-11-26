@@ -4,7 +4,6 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const uuid = require("uuid/v1");
 const nse = require("./ns_events.js");
-const u = require("./public/utils.js");
 
 app.use(express.static("public"));
 io.on("connection", function(socket){
@@ -12,6 +11,7 @@ io.on("connection", function(socket){
 		socket.emit("newGame", initGame());
 	});
 });
+
 
 http.listen(8080, function(){
 	console.log("listening to 8080");
@@ -37,9 +37,14 @@ function initGame()
 			turn: 0,
 			blackCard: undefined,
 			status: "setting"
+		},
+		decks: {
+
 		}
 	}
 	ns.on("connection", function(socket){
+		if (cantConnect(ns))
+			socket.disconnect(false);
 		socket.bmc = {
 			info: {
 				displayName: "Anon",
@@ -51,23 +56,26 @@ function initGame()
 				onfocus: false,
 				writing: false,
 				spectator: false,
-				role: "",
+				role: "user",
 				refInfo: {
 					displayName: "anon",
 					color: "FFFFFF"
 				}
 			},
-			serverData: {
-				logged: false,
-			}
 		};
-		console.log(socket.id);
 		Object.keys(nse).forEach(function(o){
-			console.log(o);
 			socket.on(o, function(data){
 				nse[o](socket, data);
 			});
 		});
 	});
 	return id;
+}
+
+function cantConnect(nsp)
+{
+	var maxPlayer = nsp.bmc.settings.maxPlayers + nsp.bmc.settings.maxSpectator;
+	if (Object.keys(nsp.connected).length > maxPlayer)
+		return true;
+	if (nsp.bmc.settings.locked && nsp.bmc.data.status == "ingame" && nsp.bmc.settings.maxSpectator)
 }

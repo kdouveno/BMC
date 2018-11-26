@@ -10,7 +10,14 @@ function initGame(id) {
 		console.log("Connected to " + id + ".");
 		game = {
 			settings: {
-				
+				maxPlayers: 10,
+				maxSpectator: 10,
+				nbrRound: 5,
+				locked: true,
+				canSurrender: false,
+				AFKTime: 60000,
+				AFKkick: false,
+				gameMode: "1by1",
 			},
 			data: {
 				status: "",
@@ -34,8 +41,11 @@ function initGame(id) {
 						}
 					}
 				}
+			},
+			decks: {
 			}
 		}
+		me = game.users[0];
 		Object.keys(ge).forEach(function(o) {
 			gameSocket.on(o, function(data) {
 				ge[o](data);
@@ -66,4 +76,16 @@ function logIn(spec) {
 
 function sendMessage(msg) {
 	gameSocket.emit("sendMessage", msg);
+}
+
+function updateSettings() {
+	gameSocket.emit("updateSettings", game.settings);
+}
+
+function updateDecks() {
+	gameSocket.emit("updateDecks", game.decks);
+}
+
+function startGame() {
+	gameSocket.emit("startGame");
 }
