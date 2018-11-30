@@ -7,11 +7,11 @@ function initGame(id) {
 	var timeout = true;
 	gameSocket.on("connect", function(){
 		timeout = false;
-		console.log("Connected to " + id + ".");
+		console.log(id+"");
 		game = {
 			settings: {
 				maxPlayers: 10,
-				maxSpectator: 10,
+				maxSpectators: 10,
 				nbrRound: 5,
 				locked: true,
 				canSurrender: false,
@@ -62,7 +62,7 @@ function newGame() {
 	socket.emit("newGame");
 }
 
-function joinGame(id){
+function joinGame(id) {
 	initGame(id);
 }
 

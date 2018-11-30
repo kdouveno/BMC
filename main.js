@@ -24,7 +24,7 @@ function initGame()
 	ns.bmc = {
 		settings: {
 			maxPlayers: 10,
-			maxSpectator: 10,
+			maxSpectators: 10,
 			nbrRound: 5,
 			locked: true,
 			canSurrender: false,
@@ -45,6 +45,7 @@ function initGame()
 	ns.on("connection", function(socket){
 		if (cantConnect(ns))
 			socket.disconnect(false);
+		socket.join("logging")
 		socket.bmc = {
 			info: {
 				displayName: "Anon",
@@ -55,7 +56,6 @@ function initGame()
 				status: "",
 				onfocus: false,
 				writing: false,
-				spectator: false,
 				role: "user",
 				refInfo: {
 					displayName: "anon",
@@ -74,8 +74,8 @@ function initGame()
 
 function cantConnect(nsp)
 {
-	var maxPlayer = nsp.bmc.settings.maxPlayers + nsp.bmc.settings.maxSpectator;
-	if (Object.keys(nsp.connected).length > maxPlayer)
-		return true;
-	if (nsp.bmc.settings.locked && nsp.bmc.data.status == "ingame" && nsp.bmc.settings.maxSpectator)
+	var maxUsers = nsp.bmc.settings.maxPlayers + nsp.bmc.settings.maxSpectators;
+	if (Object.keys(nsp.connected).length > maxUsers)
+		return (true);
+	return (false);
 }

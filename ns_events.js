@@ -3,13 +3,11 @@ const request = require("request");
 
 module.exports = {
 	logIn: function(s, data) {
-		if (!u.isndef(s.rooms.logged))
+		if (!u.isndef(s.rooms.logged) || assignRole(s, data))
 			return ;
 		s.bmc.data.refInfo = {
 			displayName: data.info.displayName,
 			color: data.info.color};
-		s.bmc.data.spectator = data.spec;
-		data.spec ? s.join("spectators") : s.join("players");
 		s.bmc.info = {
 			displayName: data.info.displayName,
 			color: data.info.color};
@@ -33,6 +31,7 @@ module.exports = {
 			this.playerUpdate(s);
 			s.emit("alert", "You're the only one in there, you were made this room's owner.");
 		}
+		s.leave("logging");
 		s.join("logged");
 	},
 	playerUpdate: function(s, info) {
@@ -43,7 +42,6 @@ module.exports = {
 		s.broadcast.in("logged").emit("playerUpdate", {user: out, id: s.id});
 	},
 	sendMessage: function(s, data) {
-		console.log("data:");
 		console.log(data);
 		s.broadcast.emit("alert", data);
 	},
@@ -69,7 +67,6 @@ module.exports = {
 	},
 	startGame: function(s) {
 		s.nsp.bmc.data.status = "ingame";
-		out = []
 	}
 };
 
@@ -117,4 +114,24 @@ function loadDeck(ns, code, used) {
 		});
 
 	});
+}
+
+function assignRole(s, data) {
+	var nbrPl = u.isndef(s.nsp.adapter.rooms.players) ? 0 : s.nsp.adapter.rooms.players.length;
+	var nbrSp = u.isndef(s.nsp.adapter.rooms.spectators) ? 0 : s.nsp.adapter.rooms.spectators.length;
+
+	if (!data.spec && !(s.nsp.bmc.settings.locked && s.nsp.bmc.data.status == "ingame") && nbrPl < s.nsp.bmc.settings.maxPlayers) {
+		s.emit("alert", "You are a player.");
+		s.join("players");
+	}
+	else if (nbrSp < s.nsp.bmc.settings.maxSpectators) {
+		s.emit("alert", "You are a spactator.");
+		s.join("spectators");
+	}
+	else {
+		s.emit("alert", "There is not enough space remaining for you in this room.\nDisconnecting...");
+		s.disconnect(false);
+		return true;
+	}
+	return false;
 }
