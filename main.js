@@ -1,9 +1,10 @@
-const express = require("express");
-const app = express();
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
-const uuid = require("uuid/v1");
-const nse = require("./ns_events.js");
+const express	= require("express");
+const app		= express();
+const http		= require("http").Server(app);
+const io		= require("socket.io")(http);
+const uuid		= require("uuid/v1");
+const nse		= require("./ns_events.js");
+const dunno 	= require("./dunno_yet.js");
 
 app.use(express.static("public"));
 io.on("connection", function(socket){
@@ -49,7 +50,7 @@ function initGame()
 	}
 	ns.on("connection", function(socket){
 		if (cantConnect(ns))
-			socket.disconnect(false);
+			dunno.kick(socket, "There is not enough space remaining for you in this room.");
 		socket.join("logging")
 		socket.bmc = {
 			info: {
@@ -58,7 +59,7 @@ function initGame()
 			},
 			data: {
 				order: 0,
-				status: "",
+				status: "waiting",
 				onfocus: false,
 				writing: false,
 				role: "user",

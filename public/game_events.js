@@ -17,5 +17,9 @@ ge = {
 	},
 	updateDecks: function(decks) {
 		game.decks = decks;
+	},
+	kickedOut: function(data) {
+		console.log("you got kicked out of " + data.id + " for the following reason:\n");
+		console.log(data.msg);
 	}
 }

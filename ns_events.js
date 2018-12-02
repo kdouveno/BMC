@@ -1,5 +1,7 @@
-const u = require("./public/utils.js");
-const request = require("request");
+const u			= require("./public/utils.js");
+const request	= require("request");
+const dunno 	= require("./dunno_yet.js");
+const ig		= require("./ingame.js");
 
 module.exports = {
 	logIn: function(s, data) {
@@ -18,7 +20,6 @@ module.exports = {
 			s.emit("loadUser", {user: s.nsp.connected[o].bmc, id: o})
 			i++;
 		});
-
 		s.broadcast.in("logged").emit("loadUser", {user: s.bmc, id: s.id});
 		s.emit("updateSettings", s.nsp.bmc.settings);
 		var out = Object.assign({}, s.nsp.bmc.decks);
@@ -65,9 +66,28 @@ module.exports = {
 		});
 	},
 	startGame: function(s) {
-		s.nsp.bmc.data.status = "ingame";
+		if (cantContinue(s, "start game"))
+			return ;
+		ig.buildPiles(s.nsp.bmc);
+		ig.washHands(s.nsp);
+		ig.giveCards(s.nsp);
+		ig.setOrder(s.nsp);
+		s.nsp.in("logged")
 	}
 };
+
+function clientDeck(decks) {
+	var out = {};
+	Object.keys(decks).forEach((id) => {
+		out[id] = decks[id].count;
+	});
+	console.log(out);
+	return out;
+}
+
+function logged(s) {
+	return (s.nsp.in("logged"));
+}
 
 function cantContinue(s, modif) {
 	if (s.bmc.data.role !== "owner" && s.bmc.data.role !== "modo"){
@@ -81,9 +101,9 @@ function cantContinue(s, modif) {
 	return 0;
 }
 
-function loadDeck(ns, code, used) {
+function loadDeck(ns, code, count) {
 	if (!u.isndef(ns.bmc.decks[code])) {
-		ns.bmc.decks[code].used = used;
+		ns.bmc.decks[code].count = count;
 		return ;
 	}
 	request("https://api.cardcastgame.com/v1/decks/" + code, function (err, response, body) {
@@ -91,16 +111,19 @@ function loadDeck(ns, code, used) {
 			return ;
 		var out;
 		out = JSON.parse(body);
-		if (out.id == "not_found")
+		if (out.id == "not_found") {
+			ns.to("logged").emit("updateDecks", clientDeck(ns.bmc.decks));
 			return ;
+		}
 		ns.bmc.decks[code] = {
-			used: used,
+			count: count,
 			name: out.name,
 			description: out.description,
 			author: out.author,
 			call_count: out.call_count,
 			response_count: out.response_count
 		};
+		ns.to("logged").emit("updateDecks", clientDeck(ns.bmc.decks));
 		request("https://api.cardcastgame.com/v1/decks/" + code + "/calls", function (err, response, body) {
 			if (err)
 				return ;
@@ -128,8 +151,7 @@ function assignRole(s, data) {
 		s.join("spectators");
 	}
 	else {
-		s.emit("alert", "There is not enough space remaining for you in this room.\nDisconnecting...");
-		s.disconnect(false);
+		dunno.kick(s, "There is not enough space remaining for you in this room.");
 		return true;
 	}
 	return false;

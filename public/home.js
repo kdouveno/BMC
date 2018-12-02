@@ -7,7 +7,7 @@ function initGame(id) {
 	var timeout = true;
 	gameSocket.on("connect", function(){
 		timeout = false;
-		console.log(id+"");
+		console.log('joinGame("'+id+'")');
 		game = {
 			settings: {
 				maxPlayers: 10,
