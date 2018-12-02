@@ -18,6 +18,7 @@ function initGame(id) {
 				AFKTime: 60000,
 				AFKkick: false,
 				gameMode: "1by1",
+				handLength: 7
 			},
 			data: {
 				status: "",

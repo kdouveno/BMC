@@ -31,6 +31,7 @@ function initGame()
 			AFKTime: 60000,
 			AFKkick: false,
 			gameMode: "1by1",
+			handLength: 7
 		},
 		data: {
 			round: 0,
@@ -40,6 +41,10 @@ function initGame()
 		},
 		decks: {
 
+		},
+		piles: {
+			res: [],
+			calls: []
 		}
 	}
 	ns.on("connection", function(socket){
@@ -62,6 +67,7 @@ function initGame()
 					color: "FFFFFF"
 				}
 			},
+			hand: []
 		};
 		Object.keys(nse).forEach(function(o){
 			socket.on(o, function(data){
