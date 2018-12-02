@@ -46,10 +46,9 @@ module.exports = {
 		s.broadcast.emit("alert", data);
 	},
 	updateSettings: function(s, data) {
-		if (cantContinue(s, "change game settings"))
-			return ;
-		s.nsp.bmc.settings = data;
-		s.broadcast.emit("updateSettings", s.nsp.bmc.settings);
+		if (!cantContinue(s, "change game settings"))
+			s.nsp.bmc.settings = data;
+		logged(s).emit("updateSettings", s.nsp.bmc.settings);
 	},
 	printSocket: function(s) {
 		console.log(s);
@@ -57,13 +56,13 @@ module.exports = {
 		console.log(s.nsp.bmc.decks);
 	},
 	updateDecks: function(s, decks) {
-		if (cantContinue(s, "change decks"))
+		if (cantContinue(s, "change decks")) {
+			logged(s).emit("updateDecks", clientDeck(s.nsp.bmc.decks));
 			return ;
-		var d = s.nsp.bmc.decks;
+		}
 		Object.keys(decks).forEach(o => {
 			loadDeck(s.nsp, o, decks[o]);
 		});
-		s.broadcast.emit("updateDecks", decks);
 	},
 	startGame: function(s) {
 		s.nsp.bmc.data.status = "ingame";
