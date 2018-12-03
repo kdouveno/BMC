@@ -1,0 +1,31 @@
+{
+  "name": "bmc",
+  "version": "1.0.0",
+  "description": "A web application to play blanc manger coco/ limit limit/ cards against humanity",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "request": "^2.88.0",
+    "socket.io": "^2.1.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdouveno/BMC.git"
+  },
+  "keywords": [
+    "game",
+    "web",
+    "socket.io"
+  ],
+  "author": "kdouveno",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kdouveno/BMC/issues"
+  },
+  "homepage": "https://github.com/kdouveno/BMC#readme"
+}
