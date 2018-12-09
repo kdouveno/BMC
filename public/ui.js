@@ -1,0 +1,5 @@
+ui = {
+	playerUpdate: function(){
+
+	}
+}
