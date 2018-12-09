@@ -72,7 +72,12 @@ module.exports = {
 		ig.washHands(s.nsp);
 		ig.giveCards(s.nsp);
 		ig.setOrder(s.nsp);
-		s.nsp.in("logged")
+		ig.draw(s, true);
+		logged(s).emit("gameStatus", {settings: s.nsp.bmc.settings, data: s.nsp.bmc.data, decks: clientDeck(s.nsp.bmc.decks)});
+		Object.keys(s.nsp.adapter.rooms.players.sockets).forEach(pl => {
+			s.nsp.sockets[pl].emit("updateHand", s.nsp.sockets[pl].bmc.hand);
+			this.playerUpdate(s.nsp.sockets[pl]);
+		});
 	}
 };
 
@@ -104,6 +109,7 @@ function cantContinue(s, modif) {
 function loadDeck(ns, code, count) {
 	if (!u.isndef(ns.bmc.decks[code])) {
 		ns.bmc.decks[code].count = count;
+		ns.to("logged").emit("updateDecks", clientDeck(ns.bmc.decks));
 		return ;
 	}
 	request("https://api.cardcastgame.com/v1/decks/" + code, function (err, response, body) {

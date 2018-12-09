@@ -21,5 +21,16 @@ ge = {
 	kickedOut: function(data) {
 		console.log("you got kicked out of " + data.id + " for the following reason:\n");
 		console.log(data.msg);
+	},
+	gameStatus: function(data) {
+		console.log("GAMESTATUS");
+		console.log(data);
+		game.settings = data.settings;
+		game.data = data.data;
+	},
+	updateHand: function(hand){
+		me.hand = hand;
+		console.log("HAND");
+		console.log(hand);
 	}
 }

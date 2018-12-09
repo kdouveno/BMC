@@ -1,13 +1,12 @@
 const socket = io("/");
-console.log(io);
 socket.on("newGame", initGame);
-game = {};
 function initGame(id) {
 	gameSocket = io("/" + id, {forceNew: true});
 	var timeout = true;
 	gameSocket.on("connect", function(){
 		timeout = false;
 		console.log('joinGame("'+id+'")');
+		//afficher l'interface de login display name et colo, spectator
 		game = {
 			settings: {
 				maxPlayers: 10,

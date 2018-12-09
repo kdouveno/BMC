@@ -10,6 +10,7 @@ module.exports = {
 			}
 		});
 		bmc.piles.res = u.shuffle(bmc.piles.res);
+		bmc.piles.calls = u.shuffle(bmc.piles.calls);
 	},
 	giveCards: function(nsp) {
 		for (let i = 0; i < nsp.bmc.settings.handLength; i++) {
@@ -18,8 +19,12 @@ module.exports = {
 			});
 		}
 	},
-	draw: function(s) {
-		s.bmc.hand.push(Object.assign({},s.nsp.bmc.piles.res.shift()));
+	draw: function(s, black) {
+		if (black){
+			s.nsp.bmc.data.blackCard = Object.assign({}, s.nsp.bmc.piles.calls.shift());
+		}
+		else
+			s.bmc.hand.push(Object.assign({}, s.nsp.bmc.piles.res.shift()));
 	},
 	washHands: function(nsp) {
 		Object.keys(nsp.adapter.rooms.players.sockets).forEach(id => {
@@ -27,11 +32,9 @@ module.exports = {
 		});
 	},
 	setOrder: function(nsp) {
-		nsp.bmc.playerQueue = {
-			selector: 0,
-			queue: u.shuffle(
-				Object.keys(nsp.adapter.rooms.players.sockets)
-			)
-		};
+		nsp.bmc.data.selector = 0;
+		nsp.bmc.data.queue = u.shuffle(
+			Object.keys(nsp.adapter.rooms.players.sockets)
+		)
 	}
 }
