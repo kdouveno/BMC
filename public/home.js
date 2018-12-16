@@ -1,7 +1,12 @@
 const socket = io("/");
+userPrefs = {
+	displayName: "Anon",
+	color: "",
+	spectator: false
+}
 socket.on("newGame", initGame);
 function initGame(id) {
-	gameSocket = io("/" + id, {forceNew: true});
+	gameSocket = io("/" + id, {forceNew: true, query: {data: JSON.stringify(userPrefs)}});
 	var timeout = true;
 	gameSocket.on("connect", function(){
 		timeout = false;

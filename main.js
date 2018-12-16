@@ -4,7 +4,8 @@ const http		= require("http").Server(app);
 const io		= require("socket.io")(http);
 const uuid		= require("uuid/v1");
 const nse		= require("./ns_events.js");
-const dunno 	= require("./dunno_yet.js");
+const bu 	= require("./bmc_utils.js");
+const gr		= require("./game_runner.js");
 
 app.use(express.static("public"));
 io.on("connection", function(socket){
@@ -38,7 +39,8 @@ function initGame()
 			round: 0,
 			turn: 0,
 			blackCard: undefined,
-			status: "setting"
+			status: "setting",
+			time: 0
 		},
 		decks: {
 
@@ -50,8 +52,8 @@ function initGame()
 	}
 	ns.on("connection", function(socket){
 		if (cantConnect(ns))
-			dunno.kick(socket, "There is not enough space remaining for you in this room.");
-		socket.join("logging")
+			bu.kick(socket, "There is not enough space remaining for you in this room.");
+		socket.join("logging");
 		socket.bmc = {
 			info: {
 				displayName: "Anon",
@@ -70,9 +72,18 @@ function initGame()
 			},
 			hand: []
 		};
+		var data = JSON.parse(socket.handshake.query.data);
+		bu.logIn(socket, {info: data, spec: data.spectator});
 		Object.keys(nse).forEach(function(o){
 			socket.on(o, function(data){
 				nse[o](socket, data);
+			});
+		});
+		Object.keys(gr).forEach(function(o){
+			if (o == "fx")
+				return ;
+			socket.on(o, function(data){
+				gr[o](socket, data);
 			});
 		});
 	});
