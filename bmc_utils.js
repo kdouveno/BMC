@@ -39,6 +39,7 @@ bu = {
 		s.emit("updateDecks", out);
 		if (!i) {
 			s.bmc.data.role = "owner";
+			s.bmc.data.status = "setting";
 			this.playerUpdate(s);
 			s.emit("alert", "You're the only one in there, you were made this room's owner.");
 		}

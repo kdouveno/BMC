@@ -13,6 +13,8 @@ module.exports = {
 	updateSettings: function(s, data) {
 		if (!cantContinue(s, "change game settings"))
 			s.nsp.bmc.settings = data;
+		if (s.nsp.bmc.settings.maxPlayers < 3)
+			s.nsp.bmc.settings.maxPlayers = 3;
 		bu.logged(s).emit("updateSettings", s.nsp.bmc.settings);
 	},
 	printSocket: function(s) {
@@ -30,7 +32,7 @@ module.exports = {
 		});
 	},
 	startGame: function(s) {
-		if (cantContinue(s, "start game"))
+		if (cantContinue(s, "start game") || cantStart(s.nsp))
 			return ;
 		ig.buildPiles(s.nsp.bmc);
 		ig.washHands(s.nsp);
@@ -40,10 +42,13 @@ module.exports = {
 };
 
 
-
+function cantStart(nsp) {
+	return (!Object.keys(nsp.bmc.decks).length
+	|| Object.keys(nsp.adapter.rooms.players.sockets).length < 3)
+}
 
 function cantContinue(s, modif) {
-	if (s.bmc.data.role !== "owner" && s.bmc.data.role !== "modo"){
+	if (!/owner|modo/.test(s.bmc.data.role)){
 		s.emit("alert", "You are not allowed to "+ modif +". You must be owner or moderator of this room.");
 		return 1;
 	}

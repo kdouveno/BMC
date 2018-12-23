@@ -43,7 +43,11 @@ module.exports = {
 			this.next(nsp);
 		},
 		next: function(nsp) {
-			nsp.bmc.data.selector++;
+			if (Object.keys(nsp.adapter.rooms.players.sockets).length - Object.keys(nsp.adapter.rooms.afk.sockets).length < 3)
+				this.conclude(nsp, true);
+			do
+				nsp.bmc.data.selector++;
+			while (nsp.sockets[nsp.bmc.data.queue[nsp.bmc.data.selector]].bmc.data.disconnected)
 			if (nsp.bmc.data.selector >= nsp.bmc.data.queue.length)
 			{
 				nsp.bmc.data.selector = 0;
@@ -51,7 +55,7 @@ module.exports = {
 			}
 			this.play(nsp);
 		},
-		conclude: function(nsp) {
+		conclude: function(nsp, bool) {
 			var sockets = Object.keys(nsp.adapter.rooms.players.sockets).map(id => {
 				return (nsp.sockets[id]);
 			});
@@ -63,6 +67,8 @@ module.exports = {
 			}).map(o => {
 				return (o.id);
 			});
+			if (bool)
+				nsp.emit("alert", "Game Canceled");
 			nsp.emit("gameWin", out);
 		},
 		resAfkTime: function(nsp){
@@ -95,7 +101,7 @@ module.exports = {
 		s.emit("playWhiteRes", true);
 		bu.playerUpdate(s);
 		if (Object.keys(s.nsp.adapter.rooms.players.sockets).reduce((out, id) => {
-			return (out && s.nsp.sockets[id].bmc.data.status != "playing")
+			return (out && (s.nsp.sockets[id].bmc.data.status != "playing" || s.nsp.sockets[id].bmc.data.disconnected))
 		}, true)){
 			clearInterval(s.nsp.bmc.timeout);
 			this.fx.choose(s.nsp);

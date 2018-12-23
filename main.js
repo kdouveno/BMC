@@ -4,7 +4,7 @@ const http		= require("http").Server(app);
 const io		= require("socket.io")(http);
 const uuid		= require("uuid/v1");
 const nse		= require("./ns_events.js");
-const bu 	= require("./bmc_utils.js");
+const bu		= require("./bmc_utils.js");
 const gr		= require("./game_runner.js");
 
 app.use(express.static("public"));
@@ -13,7 +13,6 @@ io.on("connection", function(socket){
 		socket.emit("newGame", initGame());
 	});
 });
-
 
 http.listen(8080, function(){
 	console.log("listening to 8080");
@@ -50,28 +49,37 @@ function initGame()
 			calls: []
 		}
 	}
-	ns.on("connection", function(socket){
+	ns.on("connection", function(socket) {
 		if (cantConnect(ns))
 			bu.kick(socket, "There is not enough space remaining for you in this room.");
-		socket.join("logging");
-		socket.bmc = {
-			info: {
-				displayName: "Anon",
-				color: "FFFFFF",
-			},
-			data: {
-				order: 0,
-				status: "waiting",
-				onfocus: false,
-				writing: false,
-				role: "user",
-				refInfo: {
-					displayName: "anon",
-					color: "FFFFFF"
-				}
-			},
-			hand: []
-		};
+		if (u.isndef(socket.bmc)){
+			socket.join("logging");
+			socket.bmc = {
+				info: {
+					displayName: "Anon",
+					color: "FFFFFF",
+				},
+				data: {
+					order: 0,
+					status: "waiting",
+					role: "user",
+					refInfo: {
+						displayName: "anon",
+						color: "FFFFFF"
+					}
+				},
+				hand: []
+			};
+		} else {
+			socket.leave("afk");
+			console.log("reconnection: " + socket.id);
+		}
+		socket.on("disconnect", (r) => {
+			console.log("deconnection: " + socket.id);
+			socket.join("afk");
+			if (/calling|choosing/.test(socket.bmc.data.status))
+				gr.fx.next(ns);
+		});
 		var data = JSON.parse(socket.handshake.query.data);
 		bu.logIn(socket, {info: data, spec: data.spectator});
 		Object.keys(nse).forEach(function(o){

@@ -25,7 +25,7 @@ function initGame(id) {
 				handLength: 7
 			},
 			data: {
-				status: "",
+				status: "setting",
 			},
 			users: {
 				0: {
@@ -35,11 +35,11 @@ function initGame(id) {
 					},
 					data: {
 						order: 0,
-						status: "",
+						status: "waiting",
 						onfocus: false,
 						writing: false,
 						spectator: false,
-						role: "",
+						role: "user",
 						refInfo: {
 							displayName: "anon",
 							color: "FFFFFF"
