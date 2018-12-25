@@ -1,4 +1,4 @@
-const u			= require("./public/utils.js");
+const u			= require("./public/scripts/utils.js");
 const request	= require("request");
 const bu 		= require("./bmc_utils.js");
 const ig		= require("./ingame.js");

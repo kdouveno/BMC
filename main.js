@@ -12,6 +12,9 @@ io.on("connection", function(socket){
 	socket.on("newGame", function(){
 		socket.emit("newGame", initGame());
 	});
+	socket.on("joinNsp", (test, fn) => {
+		fn(!u.isndef(io.nsps["/" + test]));
+	});
 });
 
 http.listen(8080, function(){

@@ -1,0 +1,43 @@
+#uiContent{
+	display: flex;
+	justify-content: stretch;
+}
+#uiContent>div{
+	width: 300px;
+	height: 100vh;
+}
+.rightPanel{
+	border-left: 2px solid var(--pc);
+}
+.rightPanel.hidden{
+	position: fixed;
+	transform: translateX(100vw);
+}
+.rightPanel.hidden.shown{
+	transform: translateX(calc(100vw - 300px));
+}
+#board{
+	flex: 1;
+}
+.title{
+	background-color: var(--pc);
+	color: var(--bc);
+}
+.title>h2{
+	padding: 10px;
+	display: block;
+	user-select: none;
+}
+#nav{
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap-reverse;
+}
+
+#navLogos{
+	margin: 2px;
+	height: calc(1.5em + 20px);
+}
+#navLogos>svg{
+	height: 100%;
+}

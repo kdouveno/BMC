@@ -1,4 +1,4 @@
-const u = require("./public/utils.js");
+const u = require("./public/scripts/utils.js");
 
 module.exports = {
 	buildPiles: function(bmc) {

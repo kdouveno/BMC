@@ -1,6 +1,6 @@
 const ig	= require("./ingame.js");
 const bu	= require("./bmc_utils.js");
-const u		= require("./public/utils.js");
+const u		= require("./public/scripts/utils.js");
 
 module.exports = {
 	fx: {

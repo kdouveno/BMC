@@ -3,13 +3,71 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Limit Limit - Home</title>
+		<link rel="stylesheet" href="style/global.css"/>
+		<link rel="stylesheet" href="style/login.css"/>
+		<link rel="stylesheet" href="style/ui.css"/>
+		<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
-		<script src="utils.js"></script>
-		<script src="game_events.js"></script>
+		<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+		<script src="scripts/jscolor.js"></script>
+		<script src="scripts/utils.js"></script>
+		<script src="scripts/game_events.js"></script>
+		<script src="scripts/home.js"></script>
+
+		<script src="scripts/login.js"></script>
 	</head>
 	<body>
-		<h1 onclick="newGame()">hello world</h1>
-		<script src="home.js"></script>
+		<div id="loginContainert">
+			<form id="login">
+				<h1 style="font-size: 4em" class="noselect">BMC</h1>
+				<input id="refDisplayName" tabindex="0" type="text" placeholder="Display Name"/>
+				<input tabindex="0" id="refColor" class="jscolor {width: 442, height: 150, backgroundColor: '#272727', required: false}" placeholder="User Color">
+				<input id="tokenInput" tabindex="0" type="text" placeholder="Token" oninput="login.changeEnter(this)"/>
+				<div tabindex="0" class="enter noselect" onclick="enter()">
+					<div>
+						<div class="newgame">NEW GAME</div>
+						<div class="joingame">JOIN GAME</div>
+					</div>
+					<div class="hover">
+						<div class="newgame">NEW GAME</div>
+						<div class="joingame">JOIN GAME</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div id="menuContainer">
+			<form id="formstyle">
+				<input type="text"/>
+				<input type="number"/>
+				<input type="checkbox"/>
+			</form>
+		</div>
+		<div id="uiContainert">
+			<div id="board">
+				<div class="title" id="nav">
+					<h2>Board</h2>
+
+					<div id="navLogos">
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+					</div>
+				</div>
+			</div>
+			<div id="hand" class="rightPanel">
+				<div class="title">
+					<h2>Hand</h2>
+				</div>
+			</div>
+			<div id="users" class="rightPanel">
+				<div class="title">
+					<h2>Online Users</h2>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
