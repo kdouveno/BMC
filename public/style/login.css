@@ -1,4 +1,4 @@
-#loginContent{
+#loginContainer{
 	display: flex;
 	width: 100vw;
 	height: 100vh;
@@ -7,7 +7,6 @@
 	position: fixed;
 	border-right: 100vw solid var(--pc);
 	background-color: var(--bc);
-	display: none;
 }
 
 @keyframes hideLogin{
@@ -30,7 +29,7 @@
 
 	}
 }
-#loginContent.hidden{
+#loginContainer.hidden{
 	animation: calc(1.5s * var(--at)) 1 normal hideLogin;
 	animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 	border-right-width: 0vw;
@@ -46,59 +45,6 @@
 }
 
 #login>*:not(h1){
-	width: 100%;
 	margin: 10px 0px;
 	border: 1px solid var(--pc);
-}
-
-#login input{
-	background-color: transparent;
-	box-sizing: border-box;
-	font-size: inherit;
-	height: 2em;
-	color: inherit;
-	padding: 10px;
-	transition: transform calc(.05s * var(--at)) linear
-}
-#login input::placeholder{
-	opacity: .3;
-}
-
-#login input:focus{
-	outline-width: 0px;
-	transform: scale(1.02);
-}
-
-#login .enter{
-	height: 2em;
-	width: calc(100% - 7px);
-	border: 1px solid var(--pc);
-	border-left-width: 6px;
-	overflow: hidden;
-	cursor: pointer;
-}
-.enter>div{
-	height: 2em;
-}
-.enter>div>div{
-	display: flex;
-	align-items: center;
-	height: 2em;
-	color: inherit;
-	margin: 0px 10px;
-	transition: transform calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1)
-}
-.enter.join>div>div{
-	transform: translateY(-100%);
-}
-.enter .hover{
-	width: 0%;
-	color: var(--bc);
-	background-color: var(--pc);
-	transform: translateY(-100%);
-	overflow: hidden;
-	transition: width calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1);
-}
-.enter:hover .hover, .enter:focus .hover{
-	width: 100%;
 }

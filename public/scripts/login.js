@@ -1,5 +1,5 @@
 var events = function(){
-	$("#loginContent").keydown(e => {
+	$("#loginContainer").keydown(e => {
 		if (e.key == "Enter")
 			enter();
 	});
@@ -19,8 +19,8 @@ login = {
 	},
 	changeEnter: function(e){
 		if (e.value == "")
-			$(".enter").removeClass("join");
+			$("#enter").removeClass("join");
 		else
-			$(".enter").addClass("join");
+			$("#enter").addClass("join");
 	}
 }

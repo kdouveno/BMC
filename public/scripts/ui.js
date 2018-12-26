@@ -1,5 +1,5 @@
 ui = {
-	playerUpdate: function(){
-
+	displayGameUI: function(){
+		$("#loginContainer").addClass("hidden");
 	}
 }

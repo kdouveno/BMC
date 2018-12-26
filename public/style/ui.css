@@ -1,8 +1,8 @@
-#uiContent{
+#uiContainer{
 	display: flex;
 	justify-content: stretch;
 }
-#uiContent>div{
+#uiContainer>div{
 	width: 300px;
 	height: 100vh;
 }

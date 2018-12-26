@@ -7,14 +7,14 @@ userPrefs = {
 
 $(document).ready(function() {
 	login.login();
+	form.setNumInputs();
 	socket.on("newGame", initGame);
 });
 
 function enter(){
-	userPrefs.displayName = $("#refDisplayName").attr("value");
-	userPrefs.color = $("#refColor").attr("value");
-	if ($(".enter").hasClass("join"))
-		initGame($("#tokenInput").attr("value"));
+	userPrefs = form.objForm("#login");
+	if ($("#enter").hasClass("join"))
+		initGame(userPrefs.token);
 	else
 		newGame();
 }
@@ -32,7 +32,7 @@ function initGame(id) {
 		gameSocket.on("connect", function(){
 			timeout = false;
 			console.log('joinGame("'+id+'")');
-			//afficher l'interface de login display name et colo, spectator
+			ui.displayGameUI();
 			game = {
 				settings: {
 					maxPlayers: 10,

@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="style/global.css"/>
 		<link rel="stylesheet" href="style/login.css"/>
 		<link rel="stylesheet" href="style/ui.css"/>
+		<link rel="stylesheet" href="style/ui.form.css"/>
 		<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
@@ -16,15 +17,17 @@
 		<script src="scripts/home.js"></script>
 
 		<script src="scripts/login.js"></script>
+		<script src="scripts/ui.js"></script>
+		<script src="scripts/form.js"></script>
 	</head>
 	<body>
-		<div id="loginContainert">
+		<div style="displa: none" id="loginContainer">
 			<form id="login">
 				<h1 style="font-size: 4em" class="noselect">BMC</h1>
-				<input id="refDisplayName" tabindex="0" type="text" placeholder="Display Name"/>
-				<input tabindex="0" id="refColor" class="jscolor {width: 442, height: 150, backgroundColor: '#272727', required: false}" placeholder="User Color">
-				<input id="tokenInput" tabindex="0" type="text" placeholder="Token" oninput="login.changeEnter(this)"/>
-				<div tabindex="0" class="enter noselect" onclick="enter()">
+				<input name="displayName" id="refDisplayName" tabindex="0" type="text" placeholder="Display Name"/>
+				<input name="color" tabindex="0" id="refColor" class="jscolor {width: 484, height: 150, backgroundColor: '#272727', required: false, mode: 'S',  minS: 40, maxS: 75}" placeholder="User Color">
+				<input name="token" id="tokenInput" tabindex="0" type="text" placeholder="Token" oninput="login.changeEnter(this)"/>
+				<div tabindex="0" id="enter" class="button inputPlus noselect" onclick="enter()">
 					<div>
 						<div class="newgame">NEW GAME</div>
 						<div class="joingame">JOIN GAME</div>
@@ -37,17 +40,36 @@
 			</form>
 		</div>
 		<div id="menuContainer">
-			<form id="formstyle">
-				<input type="text"/>
+			<form id="formstyle" style="padding:10px">
+				<table class=".formClass" style="width: 100%">
+					<tr>
+						<th>lol</th>
+					</tr>
+					<tr>
+						<td>une entrée</td>
+						<td><input type="text"/></td>
+					</tr>
+					<tr>
+						<td>un nombre</td>
+						<td><input type="number"/></td>
+					</tr>
+					<tr>
+						<td>un nombre</td>
+						<td>
+							<input type="number" value="0"/>
+						</td>
+					</tr>
+				</table>
+
 				<input type="number"/>
 				<input type="checkbox"/>
+
 			</form>
 		</div>
-		<div id="uiContainert">
+		<div style="display: none" id="uiContainer">
 			<div id="board">
 				<div class="title" id="nav">
 					<h2>Board</h2>
-
 					<div id="navLogos">
 						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
 						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>

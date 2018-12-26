@@ -1,0 +1,90 @@
+input, .inputLike{
+	border-radius: 4px;
+	margin: 10px 0px;
+	border: 1px solid var(--pc);
+}
+
+input, .inputLike{
+	box-sizing: border-box;
+	font-size: inherit;
+	height: 2em;
+	width: 100%;
+	color: inherit;
+	padding: 10px;
+	transition: transform calc(.05s * var(--at)) linear;
+	background-color: transparent;
+}
+
+input::placeholder{
+	opacity: .3;
+}
+
+input:focus{
+	outline-width: 0px;
+	transform: scale(1.02);
+}
+
+.button>div{
+	height: 2em;
+}
+
+.button>div>div{
+	display: flex;
+	align-items: center;
+	height: 2em;
+	color: inherit;
+	margin: 0px 10px;
+	transition: transform calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1)
+}
+
+.button.join>div>div{
+	transform: translateY(-100%);
+}
+
+.button .hover{
+	width: 0%;
+	color: var(--bc);
+	background-color: var(--pc);
+	transform: translateY(-100%);
+	overflow: hidden;
+	transition: width calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1);
+}
+
+.button:hover .hover, .button:focus .hover{
+	width: 100%;
+}
+
+form .button{
+	height: 2em;
+	width: calc(100% - 7px);
+	border: 1px solid var(--pc);
+	border-left-width: 6px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.formClass{
+	width: 100%;
+}
+
+.numInput{
+	display: flex;
+	justify-content: stretch;
+	padding: 0;
+	max-width: 150px;
+	width: 100%;
+}
+.numInput>div{
+	user-select: none;
+	padding: 7px 15px;
+	background-color: var(--pc);
+	color: var(--bc);
+}
+.numInput input{
+	flex: 1;
+	border: none;
+	margin: 0;
+	text-align: center;
+}
+.numInput input:focus{
+	transform: none;
+}
