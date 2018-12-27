@@ -7,12 +7,12 @@ userPrefs = {
 
 $(document).ready(function() {
 	login.login();
-	form.setNumInputs();
+	KDformInit();
 	socket.on("newGame", initGame);
 });
 
 function enter(){
-	userPrefs = form.objForm("#login");
+	userPrefs = KDform.objForm("#login");
 	if ($("#enter").hasClass("join"))
 		initGame(userPrefs.token);
 	else

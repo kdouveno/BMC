@@ -33,3 +33,6 @@ input::placeholder{
 	-ms-user-select: none; /* Internet Explorer/Edge */
 	user-select: none;
 }
+.simplebar-scrollbar::before{
+	background: var(--pc);
+}

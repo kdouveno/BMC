@@ -46,5 +46,4 @@
 
 #login>*:not(h1){
 	margin: 10px 0px;
-	border: 1px solid var(--pc);
 }
