@@ -3,11 +3,12 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Limit Limit - Home</title>
+		<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
 		<link rel="stylesheet" href="style/global.css"/>
 		<link rel="stylesheet" href="style/login.css"/>
 		<link rel="stylesheet" href="style/ui.css"/>
 		<link rel="stylesheet" href="style/ui.form.css"/>
-		<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+		<link rel="stylesheet" href="style/menus.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
@@ -40,31 +41,60 @@
 			</form>
 		</div>
 		<div id="menuContainer">
-			<form id="formstyle" style="padding:10px">
-				<table class=".formClass" style="width: 100%">
-					<tr>
-						<th>lol</th>
-					</tr>
-					<tr>
-						<td>une entrée</td>
-						<td><input type="text"/></td>
-					</tr>
-					<tr>
-						<td>un nombre</td>
-						<td><input type="number"/></td>
-					</tr>
-					<tr>
-						<td>un nombre</td>
-						<td>
-							<input type="number" value="0"/>
-						</td>
-					</tr>
-				</table>
-
-				<input type="number"/>
-				<input type="checkbox"/>
-
-			</form>
+			<div id="menu">
+				<div class="title nav">
+					<h2>Board</h2>
+					<div class="navLogos">
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+					</div>
+				</div>
+				<form data-simplebar>
+					<table>
+						<tr>
+							<th>Game Settings</th>
+						</tr>
+						<tr>
+							<td>maxPlayers</td>
+							<td><input name="maxPlayers" type="number"/></td>
+						</tr>
+						<tr>
+							<td>maxSpectators</td>
+							<td><input name="maxSpectators" type="number"/></td>
+						</tr>
+						<tr>
+							<td>nbrRound</td>
+							<td><input name="nbrRound" type="number"/></td>
+						</tr>
+						<tr>
+							<td>locked</td>
+							<td><input name="locked" type="checkbox"/></td>
+						</tr>
+						<tr>
+							<td>canSurrender</td>
+							<td><input name="canSurrender" type="checkbox"/></td>
+						</tr>
+						<tr>
+							<td>AFKTime</td>
+							<td><input name="AFKTime" type="number"/></td>
+						</tr>
+						<tr>
+							<td>AFKkick</td>
+							<td><input name="AFKkick" type="checkbox"/></td>
+						</tr>
+						<tr>
+							<td>gameMode</td>
+							<td><input name="gameMode" type="text"/></td>
+						</tr>
+						<tr>
+							<td>handLength</td>
+							<td><input name="handLength" type="number"/></td>
+						</tr>
+					</table>
+				</form>
+			</div>
 		</div>
 		<div style="display: none" id="uiContainer">
 			<div id="board">

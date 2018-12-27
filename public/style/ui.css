@@ -28,16 +28,16 @@
 	display: block;
 	user-select: none;
 }
-#nav{
+.nav{
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap-reverse;
 }
 
-#navLogos{
+.navLogos{
 	margin: 2px;
 	height: calc(1.5em + 20px);
 }
-#navLogos>svg{
+.navLogos>svg{
 	height: 100%;
 }
