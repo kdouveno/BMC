@@ -27,6 +27,7 @@ module.exports = {
 			bu.logged(s).emit("updateDecks", bu.clientDeck(s.nsp.bmc.decks));
 			return ;
 		}
+
 		Object.keys(decks).forEach(o => {
 			loadDeck(s.nsp, o, decks[o]);
 		});

@@ -108,6 +108,8 @@ function updateSettings() {
 }
 
 function updateDecks() {
+	game.decks = KDform.objForm("#decks");
+	console.log(game.decks);
 	gameSocket.emit("updateDecks", game.decks);
 }
 
@@ -124,4 +126,33 @@ function alert(msg) {
 	alertTimer = setTimeout(() => {
 		$("#alertContainer").removeClass("shown");
 	}, 4000);
+}
+function decode(e){
+	if (e.value.replace(/[0-9A-Z]{5}?/, "") == ""){
+		$.getJSON("https://api.cardcastgame.com/v1/decks/" + e.value, function(data){
+			$(e).parent().siblings("td[colspan=3]").html('<span style="color: var(--gc)">'+ data.name +"</span>");
+		}).fail(()=>{
+			$(e).parent().siblings("td[colspan=3]").html('<span style="color: var(--ec)">Deck Not Found</span>');
+		});
+	}
+}
+
+function addDeck(){
+	e = $("#deckAdd input").get(0);
+	if (e.value.replace(/[0-9A-Z]{5}?/, "") == ""){
+		$.getJSON("https://api.cardcastgame.com/v1/decks/" + e.value, function(data){
+			$("#deckAdd").after(`<tr class="deck">
+				<td>`+ data.code +`</td>
+				<td>
+					<input name="`+ data.code +`" type="number">
+				</td>
+				<td>`+ data.name +`</td>
+				<td>`+ data.call_count +`</td>
+				<td>`+ data.response_count +`</td>
+			</tr>`);
+			KDform.setNumInputs("#decks");
+		}).fail(()=>{
+			$(e).parent().siblings("td[colspan=3]").html('<span style="color: var(--ec)">Deck Not Found</span>');
+		});
+	}
 }

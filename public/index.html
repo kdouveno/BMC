@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Limit Limit - Home</title>
+		<title>BMC - Beta 0.1</title>
 		<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
 		<link rel="stylesheet" href="style/global.css"/>
 		<link rel="stylesheet" href="style/login.css"/>
@@ -51,7 +51,7 @@
 		<div id="menuContainer">
 			<div id="menu">
 				<div class="title nav">
-					<h2>Board</h2>
+					<h2>Settings</h2>
 					<div class="navLogos">
 						<svg viewBox="0 0 300 300" style="fill: transparent; stroke: var(--bc); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round" onclick="$('#menuContainer').removeClass('shown')">
 							<!--<rect x="10" y="10" rx="25" height="280" width="280" style="stroke-width: 2vh"/>-->
@@ -150,22 +150,33 @@
 								</div>
 							</fieldset>
 						</form>
-						<h2>UI Settings</h2>
-						<form>
-							<table>
-								<tr>
-									<td>Animations</td>
-									<td width="150px"><input name="anim" type="checkbox" oninput="ui.animSwitch(this)" checked/></td>
-								</tr>
-							</table>
-						</form>
 						<h2>Decks</h2>
-						<form>
+						<form id="decks">
 							<fieldset disabled  class="modOnly" class="modOnly">
 								<table>
-
+									<tr>
+										<th>CODE5</th>
+										<th>Count</th>
+										<th>Name</th>
+										<th>Calls</th>
+										<th>Responses</th>
+									</tr>
+									<tr id="deckAdd">
+										<td><input placeholder="CODE5" oninput="decode(this)" style="width: 5em;"></td>
+										<td>
+											<div tabindex="0" class="button inputPlus noselect" onclick="addDeck(this)">
+												<div>
+													<div>Add</div>
+												</div>
+												<div class="hover">
+													<div>Add</div>
+												</div>
+											</div>
+										</td>
+										<td colspan=3 style="text-align: center">---</td>
+									</tr>
 								</table>
-								<div tabindex="0" class="button inputPlus noselect" onclick="">
+								<div tabindex="0" class="button inputPlus noselect" onclick="updateDecks()">
 									<div>
 										<div>UPDATE</div>
 									</div>
@@ -175,6 +186,16 @@
 								</div>
 							</fieldset  class="modOnly">
 						</form>
+						<h2>UI Settings</h2>
+						<form>
+							<table>
+								<tr>
+									<td>Animations</td>
+									<td width="150px"><input name="anim" type="checkbox" oninput="ui.animSwitch(this)" checked/></td>
+								</tr>
+							</table>
+						</form>
+
 					</div>
 				</div>
 			</div>

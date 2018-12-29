@@ -6,7 +6,7 @@ function KDformInit(){
 KDform = {
 	objForm: function(sel){
 		var out = {};
-		$(sel + " input").each((i, o) => {
+		$(sel + " input[name]").each((i, o) => {
 			if ($(o).hasClass("numberInput"))
 				out[o.name] = parseInt(o.value);
 			else if ($(o).attr("type") == "checkbox")
@@ -33,9 +33,11 @@ KDform = {
 			}
 		});
 	},
-	setNumInputs: function()
+	setNumInputs: function(selector)
 	{
-		$("input[type=number]").each((i, o) => {
+		console.log((selector ? selector : "") +" input[type=number]");
+		$((selector ? selector : "") +" input[type=number]").each((i, o) => {
+			console.log(o);
 			$(o).replaceWith(`<div class="inputLike numInput">
 				<div onclick='KDform.numMinus(this)'>-</div>
 				<input class="numberInput" value="`+(isNaN($(o).attr("value")) ? 0 : $(o).attr("value"))+`" name="`+ $(o).attr("name") +`" oninput="KDform.numEvent(this)" onchange="KDform.numUnEvent(this)"/>

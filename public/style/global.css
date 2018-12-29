@@ -6,6 +6,8 @@
 body{
 	--bc: #272727;
 	--pc: #ededed;
+	--ec: #ff3030;
+	--gc: #30da30;
 	--at: 1;
 	--br: 4px;
 	--tf: cubic-bezier(0, 1, 0.5, 1);
