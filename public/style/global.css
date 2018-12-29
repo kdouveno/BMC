@@ -8,6 +8,7 @@ body{
 	--pc: #ededed;
 	--at: 1;
 	--br: 4px;
+	--tf: cubic-bezier(0, 1, 0.5, 1);
 
 	background-color: var(--bc);
 	color: var(--pc);

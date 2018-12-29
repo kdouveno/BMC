@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="style/ui.css"/>
 		<link rel="stylesheet" href="style/ui.form.css"/>
 		<link rel="stylesheet" href="style/menus.css"/>
+		<link rel="stylesheet" href="style/alert.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
@@ -22,7 +23,14 @@
 		<script src="scripts/form.js"></script>
 	</head>
 	<body>
-		<div style="displa: none" id="loginContainer">
+		<div id="alertContainer">
+			<div onclick="clearTimeout(alertTimer); $(this).parent().removeClass('shown')">
+				<div>
+					<h2>Test d'alert</h2>
+				</div>
+			</div>
+		</div>
+		<div id="loginContainer">
 			<form id="login">
 				<h1 style="font-size: 4em" class="noselect">BMC</h1>
 				<input name="displayName" id="refDisplayName" tabindex="0" type="text" placeholder="Display Name"/>
@@ -45,68 +53,158 @@
 				<div class="title nav">
 					<h2>Board</h2>
 					<div class="navLogos">
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+						<svg viewBox="0 0 300 300" style="fill: transparent; stroke: var(--bc); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round" onclick="$('#menuContainer').removeClass('shown')">
+							<!--<rect x="10" y="10" rx="25" height="280" width="280" style="stroke-width: 2vh"/>-->
+							<def>
+								<path id="circle" d="m -20 0 a 1 1 0 0 0 40 0 a 1 1 1 0 0 -40 0"/>
+								<use id="cc" href="#circle" transform="scale(2 2)"/>
+								<use id="c1" href="#circle" x="100" y="70"/>
+								<use id="c2" href="#circle" x="190" y="150"/>
+								<use id="c3" href="#circle" x="140" y="230"/>
+
+							</def>
+							<clipPath id="clip" style="clip-rule: evenodd;" class="m">
+								<path d="	M 0 0 h 300 v 300 h -300 Z
+											M 100 70  m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
+											M 190 150 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
+											M 140 230 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z"/>
+							</clipPath>
+							<use xlink:href="#c1" class="m"/>
+							<use xlink:href="#c2" class="m"/>
+							<use xlink:href="#c3" class="m"/>
+							<path d="M 70 70 h 160 m -160 80 h 160 m -160 80 h 160" style="clip-path: url(#clip)"/>
+						</svg>
 					</div>
 				</div>
-				<form data-simplebar>
-					<table>
-						<tr>
-							<th>Game Settings</th>
-						</tr>
-						<tr>
-							<td>maxPlayers</td>
-							<td><input name="maxPlayers" type="number"/></td>
-						</tr>
-						<tr>
-							<td>maxSpectators</td>
-							<td><input name="maxSpectators" type="number"/></td>
-						</tr>
-						<tr>
-							<td>nbrRound</td>
-							<td><input name="nbrRound" type="number"/></td>
-						</tr>
-						<tr>
-							<td>locked</td>
-							<td><input name="locked" type="checkbox"/></td>
-						</tr>
-						<tr>
-							<td>canSurrender</td>
-							<td><input name="canSurrender" type="checkbox"/></td>
-						</tr>
-						<tr>
-							<td>AFKTime</td>
-							<td><input name="AFKTime" type="number"/></td>
-						</tr>
-						<tr>
-							<td>AFKkick</td>
-							<td><input name="AFKkick" type="checkbox"/></td>
-						</tr>
-						<tr>
-							<td>gameMode</td>
-							<td><input name="gameMode" type="text"/></td>
-						</tr>
-						<tr>
-							<td>handLength</td>
-							<td><input name="handLength" type="number"/></td>
-						</tr>
-					</table>
-				</form>
+				<div class="scrollContent" data-simplebar>
+					<div class="formContainer" >
+						<h2>User Settings</h2>
+						<form>
+							<table>
+								<tr>
+									<td>Display name</td>
+									<td><input name="displayName" type="text"/></td>
+								</tr>
+								<tr>
+									<td>Display color</td>
+									<td><input name="color" tabindex="0" id="refColor" class="jscolor {width: 484, height: 150, backgroundColor: '#272727', required: false, mode: 'S',  minS: 40, maxS: 75}" placeholder="User Color"></td>
+								</tr>
+							</table>
+							<div tabindex="0" class="button inputPlus noselect" onclick="">
+								<div>
+									<div>UPDATE</div>
+								</div>
+								<div class="hover">
+									<div>UPDATE</div>
+								</div>
+							</div>
+						</form>
+						<h2>Game Settings</h2>
+						<form id="gameSettings">
+							<fieldset disabled class="modOnly">
+								<table>
+									<tr>
+										<td>maxPlayers</td>
+										<td><input name="maxPlayers" value=10 type="number"/></td>
+									</tr>
+									<tr>
+										<td>maxSpectators</td>
+										<td><input name="maxSpectators" value=10 type="number"/></td>
+									</tr>
+									<tr>
+										<td>nbrRound</td>
+										<td><input name="nbrRound" value=3 type="number"/></td>
+									</tr>
+									<tr>
+										<td>locked</td>
+										<td><input name="locked" type="checkbox" checked/></td>
+									</tr>
+									<tr>
+										<td>canSurrender</td>
+										<td><input name="canSurrender" type="checkbox" checked/></td>
+									</tr>
+									<tr>
+										<td>AFKTime</td>
+										<td><input name="AFKTime" value="90000" type="number"/></td>
+									</tr>
+									<tr>
+										<td>AFKkick</td>
+										<td><input name="AFKkick" checked type="checkbox"/></td>
+									</tr>
+									<tr>
+										<td>gameMode</td>
+										<td><input name="gameMode" value="1by1"/></td>
+									</tr>
+									<tr>
+										<td>handLength</td>
+										<td><input name="handLength" value=7 type="number"/></td>
+									</tr>
+								</table>
+								<div tabindex="0" class="button inputPlus noselect" onclick="updateSettings();">
+									<div>
+										<div>UPDATE</div>
+									</div>
+									<div class="hover">
+										<div>UPDATE</div>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+						<h2>UI Settings</h2>
+						<form>
+							<table>
+								<tr>
+									<td>Animations</td>
+									<td width="150px"><input name="anim" type="checkbox" oninput="ui.animSwitch(this)" checked/></td>
+								</tr>
+							</table>
+						</form>
+						<h2>Decks</h2>
+						<form>
+							<fieldset disabled  class="modOnly" class="modOnly">
+								<table>
+
+								</table>
+								<div tabindex="0" class="button inputPlus noselect" onclick="">
+									<div>
+										<div>UPDATE</div>
+									</div>
+									<div class="hover">
+										<div>UPDATE</div>
+									</div>
+								</div>
+							</fieldset  class="modOnly">
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div style="display: none" id="uiContainer">
+		<div id="uiContainer">
 			<div id="board">
-				<div class="title" id="nav">
+				<div class="title nav">
 					<h2>Board</h2>
-					<div id="navLogos">
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+					<div class="navLogos">
+						<svg viewBox="0 0 300 300" style="fill: transparent; stroke: var(--bc); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round" onclick="$('#menuContainer').addClass('shown')">
+							<!--<rect x="10" y="10" rx="25" height="280" width="280" style="stroke-width: 2vh"/>-->
+							<def>
+								<path id="circle" d="m -20 0 a 1 1 0 0 0 40 0 a 1 1 1 0 0 -40 0"/>
+								<use id="cc" href="#circle" transform="scale(2 2)"/>
+								<use id="c1" href="#circle" x="100" y="70"/>
+								<use id="c2" href="#circle" x="190" y="150"/>
+								<use id="c3" href="#circle" x="140" y="230"/>
 
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
-
-						<svg viewBox="0 0 500 500"><rect height="500" width="500" fill="blue"></rect></svg>
+							</def>
+							<clipPath id="clip" style="clip-rule: evenodd;" class="m">
+								<path d="	M 0 0 h 300 v 300 h -300 Z
+											M 100 70  m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
+											M 190 150 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
+											M 140 230 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z"/>
+							</clipPath>
+							<use xlink:href="#c1" class="m"/>
+							<use xlink:href="#c2" class="m"/>
+							<use xlink:href="#c3" class="m"/>
+							<path d="M 70 70 h 160 m -160 80 h 160 m -160 80 h 160" style="clip-path: url(#clip)"/>
+						</svg>
 					</div>
 				</div>
 			</div>

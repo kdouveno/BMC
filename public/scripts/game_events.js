@@ -1,6 +1,11 @@
 ge = {
 	playerUpdate: function(data) {
 		Object.assign(game.users[data.id], data.user);
+		if (/modo|owner/.test(me.data.role))
+			$("fieldset.modOnly").removeAttr("disabled");
+		else {
+			$("fieldset.modOnly").attr("disabled", true);
+		}
 	},
 	loadUser: function(data) {
 		if (u.isndef(game.users[data.id]))
@@ -8,10 +13,11 @@ ge = {
 		Object.assign(game.users[data.id], data.user);
 	},
 	alert: function(msg) {
-		console.log(msg);
+		alert(msg);
 	},
 	updateSettings: function(settings) {
 		game.settings = settings;
+		KDform.inject("#gameSettings", game.settings);
 	},
 	updateDecks: function(decks) {
 		game.decks = decks;

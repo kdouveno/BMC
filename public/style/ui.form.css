@@ -34,7 +34,7 @@ input:focus{
 	height: 2em;
 	color: inherit;
 	margin: 0px 10px;
-	transition: transform calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1)
+	transition: transform calc(.5s * var(--at)) var(--tf)
 }
 
 .button.join>div>div{
@@ -47,7 +47,7 @@ input:focus{
 	background-color: var(--pc);
 	transform: translateY(-100%);
 	overflow: hidden;
-	transition: width calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1);
+	transition: width calc(.5s * var(--at)) var(--tf);
 }
 
 .button:hover .hover, .button:focus .hover{
@@ -125,13 +125,13 @@ form .button{
 	overflow: hidden;
 	background-color: var(--pc);
 	color: var(--bc);
-	transition: transform calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1);
+	transition: transform calc(.5s * var(--at)) var(--tf);
 
 }
 .checkInput>.hover>div{
 	width: 100%;
 	height: 100%;
-	transition: transform calc(.5s * var(--at)) cubic-bezier(0, 1, 0.5, 1);
+	transition: transform calc(.5s * var(--at)) var(--tf);
 }
 .checkInput:not(.checked)>.hover{
 	transform: translateX(100%);
@@ -140,11 +140,22 @@ form .button{
 	transform: translateX(-100%);
 }
 
-form table{
-	margin: 30px;
-}
-
 form td:first-child{
 	text-align: right;
 	padding-right: 20px;
+}
+
+form th{
+	border-left: 5px solid var(--pc);
+	text-align: left;
+	padding: 5px;
+}
+
+fieldset[disabled] {
+	opacity: .7;
+	transform: scale(.95);
+}
+
+fieldset[disabled] .button:hover .hover, fieldset[disabled] .button:focus .hover{
+	width: 0;
 }

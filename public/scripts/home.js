@@ -4,6 +4,7 @@ userPrefs = {
 	displayName: "Anon",
 	color: "",
 }
+alertTimer = undefined;
 
 $(document).ready(function() {
 	login.login();
@@ -26,7 +27,7 @@ function getToken(){
 function initGame(id) {
 	socket.emit("joinNsp", id, (res)=>{
 		if (!res)
-			return console.log("there's no Room with this token id...");
+			return alert("there's no Room with this token id...");
 		gameSocket = io("/" + id, {forceNew: true, query: {data: JSON.stringify(userPrefs)}});
 		var timeout = true;
 		gameSocket.on("connect", function(){
@@ -106,6 +107,8 @@ function sendMessage(msg) {
 }
 
 function updateSettings() {
+	game.settings = KDform.objForm("#gameSettings");
+	console.log(game.settings);
 	gameSocket.emit("updateSettings", game.settings);
 }
 
@@ -115,4 +118,15 @@ function updateDecks() {
 
 function startGame() {
 	gameSocket.emit("startGame");
+}
+function alert(msg) {
+	console.log(msg);
+	$("#alertContainer h2").text(msg);
+	$("#alertContainer").addClass("shown");
+
+	if (!u.isndef(alertTimer))
+		clearTimeout(alertTimer);
+	alertTimer = setTimeout(() => {
+		$("#alertContainer").removeClass("shown");
+	}, 4000);
 }

@@ -38,6 +38,11 @@
 	margin: 2px;
 	height: calc(1.5em + 20px);
 }
+
+.navLogos>svg{
+	height: 100%;
+}
+
 .navLogos>svg{
 	height: 100%;
 }

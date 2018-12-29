@@ -14,7 +14,7 @@
 #menuContainer.shown{
 	z-index: 0;
 	background-color: rgba(150,150,150,.5);
-	transition: background-color .2s linear;
+	transition: background-color calc(.2s * var(--at)) linear;
 }
 
 @keyframes showMenuHeight {
@@ -47,15 +47,39 @@
 	overflow: hidden;
 	border-radius: var(--br);
 }
-#menu>form{
-	width: 100%;
-	height: calc(100% - 2em - 16px);
-}
+
 #menuContainer.shown #menu{
 	animation:
-		showMenuHeight 1s cubic-bezier(0.215, 0.61, 0.355, 1),
-		showMenuWidth 1s cubic-bezier(0.2, 0, 0, 1);
+		showMenuHeight calc(1s * var(--at)) cubic-bezier(0.215, 0.61, 0.355, 1),
+		showMenuWidth calc(1s * var(--at)) cubic-bezier(0.2, 0, 0, 1);
 	border-left: 6px solid var(--pc);
 	height: var(--mh);
 	width: var(--mw);
+}
+
+#menu .scrollContent {
+	height: calc(100% - 2em - 16px);
+	width: 100%;
+}
+#menu .formContainer{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+#menu .formContainer h2 {
+	margin: 15px;
+	margin-left: 0;
+	padding: 5px;
+	padding-left: 20px;
+	align-self: flex-start;
+	background-color: var(--pc);
+	color: var(--bc);
+}
+#menu form{
+	display: inline-block;
+}
+
+fieldset[disabled] .button{
+	display: none;
 }

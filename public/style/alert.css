@@ -1,0 +1,38 @@
+#alertContainer{
+	position: fixed;
+	width: 100vw;
+	justify-content: center;
+	display: flex;
+	transform: translateY(-1000px);
+	z-index: 150;
+	text-align: center;
+}
+#alertContainer.shown>div{
+	width: 600px;
+	border-width: 1px;
+	border-left-width: 5px;
+}
+
+#alertContainer>div{
+	width: 0px;
+	max-width: 100vw;
+	border: 0px solid var(--pc);
+	transition: width calc(0.5s * var(--at)) var(--tf),
+				border-width calc(0.5s * var(--at)) var(--tf);
+	overflow: hidden;
+	margin: 10px;
+	justify-content: center;
+	display: flex;
+	transform: translateY(1000px);
+	background-color: var(--bc);
+}
+#alertContainer>div>div{
+	width: 600px;
+	max-width: inherit;
+}
+#alertContainer h2{
+	box-sizing: border-box;
+	padding: 20px;
+	width: inherit;
+	max-width: inherit;
+}
