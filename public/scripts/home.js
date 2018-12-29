@@ -29,9 +29,8 @@ function initGame(id) {
 		if (!res)
 			return alert("there's no Room with this token id...");
 		gameSocket = io("/" + id, {forceNew: true, query: {data: JSON.stringify(userPrefs)}});
-		var timeout = true;
 		gameSocket.on("connect", function(){
-			timeout = false;
+			window.history.pushState("", "", "?" + id);
 			console.log('joinGame("'+id+'")');
 			ui.displayGameUI();
 			game = {
@@ -79,10 +78,6 @@ function initGame(id) {
 				});
 			});
 		});
-		setTimeout(function(){
-			if (timeout)
-				console.log("connection to game room failed");
-		}, 5000);
 	});
 }
 
