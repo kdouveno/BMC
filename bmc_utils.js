@@ -7,9 +7,10 @@ bu = {
 	playerUpdate: function(s, info) {
 		if (!u.isndef(info))
 			s.bmc.info = info;
-		out = {info: s.bmc.info, data: s.bmc.data};
-		s.emit("playerUpdate", {user: out, id: 0});
+		var out = {info: s.bmc.info, data: s.bmc.data};
 		s.broadcast.in("logged").emit("playerUpdate", {user: out, id: s.id});
+		out.hand = s.bmc.hand;
+		s.emit("playerUpdate", {user: out, id: 0});
 	},
 	logged: function(s) {
 		return (s.nsp.in("logged"));
@@ -17,30 +18,30 @@ bu = {
 	logIn: function(s, data) {
 		if (!u.isndef(s.rooms.logged) || assignRole(s, data))
 			return ;
+		s.leave("logging");
+		s.join("logged");
 		s.bmc.data.refInfo = {
 			displayName: data.info.displayName,
 			color: data.info.color};
-		s.bmc.info = {
-			displayName: data.info.displayName,
-			color: data.info.color};
-		var i = 0;
-		Object.keys(s.nsp.connected).forEach(o => {
-			if (s.nsp.connected[o] == s || u.isndef(s.nsp.connected[o].rooms.logged))
+		s.bmc.info = Object.assign({}, s.bmc.data.refInfo);
+		var tab = s.nsp.connected;
+		for (o in tab) {
+			var out = {info: tab[o].bmc.info, data: tab[o].bmc.data};
+			if (tab[o] == s){
+				if (Object.keys(tab).length == 1){
+					s.bmc.data.role = "owner";
+					s.bmc.data.status = "setting";
+					s.emit("alert", "You're the only one in there, you were made this room's owner.");
+				}
+				s.broadcast.emit("loadUser", {user: out, id: o});
+				s.emit("loadUser", {user: out, id: 0})
+			} else if (u.isndef(tab[o].rooms.logged))
 				return ;
-			s.emit("loadUser", {user: s.nsp.connected[o].bmc, id: o})
-			i++;
-		});
-		if (!i) {
-			s.bmc.data.role = "owner";
-			s.bmc.data.status = "setting";
-			s.emit("alert", "You're the only one in there, you were made this room's owner.");
+			else
+				s.emit("loadUser", {user: out, id: o})
 		}
-		this.playerUpdate(s);
 		s.emit("updateSettings", s.nsp.bmc.settings);
 		s.emit("updateDecks", bu.clientDeck(s.nsp.bmc.decks));
-
-		s.leave("logging");
-		s.join("logged");
 	},
 	clientDeck: function(decks) {
 		var out = {};

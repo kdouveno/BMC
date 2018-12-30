@@ -8,6 +8,7 @@ ge = {
 		}
 	},
 	loadUser: function(data) {
+		console.log("loaded " + data.id);
 		if (u.isndef(game.users[data.id]))
 			game.users[data.id] = {};
 		Object.assign(game.users[data.id], data.user);
