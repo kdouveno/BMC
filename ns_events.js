@@ -28,8 +28,8 @@ module.exports = {
 			return ;
 		}
 
-		Object.keys(decks).forEach(o => {
-			loadDeck(s.nsp, o, decks[o]);
+		Object.keys(decks).forEach((o, i) => {
+			loadDeck(s.nsp, o, decks[o], (this.length - i == 1));
 		});
 	},
 	startGame: function(s) {
@@ -60,7 +60,7 @@ function cantContinue(s, modif) {
 	return 0;
 }
 
-function loadDeck(ns, code, count) {
+function loadDeck(ns, code, count, send) {
 	if (!u.isndef(ns.bmc.decks[code])) {
 		ns.bmc.decks[code].count = count;
 		ns.to("logged").emit("updateDecks", bu.clientDeck(ns.bmc.decks));
@@ -83,7 +83,8 @@ function loadDeck(ns, code, count) {
 			call_count: out.call_count,
 			response_count: out.response_count
 		};
-		ns.to("logged").emit("updateDecks", bu.clientDeck(ns.bmc.decks));
+		if (send)
+			ns.to("logged").emit("updateDecks", bu.clientDeck(ns.bmc.decks));
 		request("https://api.cardcastgame.com/v1/decks/" + code + "/calls", function (err, response, body) {
 			if (err)
 				return ;

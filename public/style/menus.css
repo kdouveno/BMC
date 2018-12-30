@@ -82,7 +82,7 @@
 	display: inline-block;
 }
 
-fieldset[disabled] .button{
+fieldset[disabled] .button, fieldset[disabled] #addDeck{
 	display: none;
 }
 

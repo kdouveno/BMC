@@ -30,19 +30,15 @@ bu = {
 			s.emit("loadUser", {user: s.nsp.connected[o].bmc, id: o})
 			i++;
 		});
-		s.broadcast.in("logged").emit("loadUser", {user: s.bmc, id: s.id});
-		s.emit("updateSettings", s.nsp.bmc.settings);
-		var out = Object.assign({}, s.nsp.bmc.decks);
-		Object.keys(s.nsp.bmc.decks).forEach(o => {
-			out[o] = s.nsp.bmc.decks[o].used;
-		});
-		s.emit("updateDecks", out);
 		if (!i) {
 			s.bmc.data.role = "owner";
 			s.bmc.data.status = "setting";
-			this.playerUpdate(s);
 			s.emit("alert", "You're the only one in there, you were made this room's owner.");
 		}
+		this.playerUpdate(s);
+		s.emit("updateSettings", s.nsp.bmc.settings);
+		s.emit("updateDecks", bu.clientDeck(s.nsp.bmc.decks));
+
 		s.leave("logging");
 		s.join("logged");
 	},

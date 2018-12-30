@@ -137,14 +137,14 @@ function decode(e){
 	}
 }
 
-function addDeck(){
-	e = $("#deckAdd input").get(0);
-	if (e.value.replace(/[0-9A-Z]{5}?/, "") == ""){
-		$.getJSON("https://api.cardcastgame.com/v1/decks/" + e.value, function(data){
-			$("#deckAdd").after(`<tr class="deck">
+function addDeck(e, n){
+	e = e ? e : $("#deckAdd input").get(0).value;
+	if (e.replace(/[0-9A-Z]{5}?/, "") == ""){
+		$.getJSON("https://api.cardcastgame.com/v1/decks/" + e, function(data){
+			$("#deckAdd").after(`<tr id="`+data.code+`" class="deck">
 				<td>`+ data.code +`</td>
 				<td>
-					<input name="`+ data.code +`" type="number">
+					<input name="`+ data.code +`" type="number" value="`+ (n ? n : 0) +`">
 				</td>
 				<td>`+ data.name +`</td>
 				<td>`+ data.call_count +`</td>

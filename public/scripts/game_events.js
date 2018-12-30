@@ -21,9 +21,24 @@ ge = {
 	},
 	updateDecks: function(decks) {
 		game.decks = decks;
+		var local = $("#decks tr[id]:not(#deckAdd)").map(function(){
+			return (this.id);
+		}).get();
+		var tmp = Object.assign({}, decks);
+		local.forEach(o => {
+			if (u.isndef(tmp[o])) {
+				$("#"+ o).remove();
+			} else {
+				$("#"+ o +" input").get(0).value = tmp[o];
+				delete tmp[o];
+			}
+		});
+		for (key in tmp) {
+			addDeck(key, tmp[key]);
+		}
 	},
 	kickedOut: function(data) {
-		console.log("you got kicked out of " + data.id + " for the following reason:\n");
+		console.log("you got kicked out of "+ data.id +" for the following reason:\n");
 		console.log(data.msg);
 	},
 	gameStatus: function(data) {
