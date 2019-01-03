@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="style/login.css"/>
 		<link rel="stylesheet" href="style/ui.css"/>
 		<link rel="stylesheet" href="style/ui.form.css"/>
+		<link rel="stylesheet" href="style/ui.users.css"/>
 		<link rel="stylesheet" href="style/menus.css"/>
 		<link rel="stylesheet" href="style/alert.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -79,7 +80,7 @@
 				<div class="scrollContent" data-simplebar>
 					<div class="formContainer" >
 						<h2>User Settings</h2>
-						<form>
+						<form id="playerInfos">
 							<table>
 								<tr>
 									<td>Display name</td>
@@ -90,7 +91,7 @@
 									<td><input name="color" tabindex="0" id="refColor" class="jscolor {width: 484, height: 150, backgroundColor: '#272727', required: false, mode: 'S',  minS: 40, maxS: 75}" placeholder="User Color"></td>
 								</tr>
 							</table>
-							<div tabindex="0" class="button inputPlus noselect" onclick="">
+							<div tabindex="0" class="button inputPlus noselect" onclick="playerUpdate()">
 								<div>
 									<div>UPDATE</div>
 								</div>
@@ -237,6 +238,20 @@
 			<div id="users" class="rightPanel">
 				<div class="title">
 					<h2>Online Users</h2>
+				</div>
+				<div id="userScrollContent" data-simplebar>
+					<div id="usersContainer">
+						<div id="playersContainer">
+							<div class="title">
+								<h2>Players</h2>
+							</div>
+						</div>
+						<div id="spectatorsContainer">
+							<div class="title">
+								<h2>Spectators</h2>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -12,7 +12,7 @@
 }
 
 #menuContainer.shown{
-	z-index: 0;
+	z-index: 40;
 	background-color: rgba(150,150,150,.5);
 	transition: background-color calc(.2s * var(--at)) linear;
 }
@@ -58,7 +58,7 @@
 }
 
 #menu .scrollContent {
-	height: calc(100% - 2em - 16px);
+	height: calc(100% - 2em - 17px);
 	width: 100%;
 }
 #menu .formContainer{
@@ -67,7 +67,6 @@
 	flex-direction: column;
 	align-items: center;
 	padding-bottom: 20px;
-
 }
 #menu .formContainer h2 {
 	margin: 15px;

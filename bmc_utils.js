@@ -65,6 +65,7 @@ function assignRole(s, data) {
 	else if (nbrSp < s.nsp.bmc.settings.maxSpectators) {
 		s.emit("alert", "You are a spactator.");
 		s.join("spectators");
+		s.bmc.data.spec = true;
 	}
 	else {
 		bu.kick(s, "There is not enough space remaining for you in this room.");

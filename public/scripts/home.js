@@ -5,6 +5,7 @@ userPrefs = {
 	color: "",
 }
 alertTimer = undefined;
+logged = false;
 
 $(document).ready(function() {
 	login.login();
@@ -33,6 +34,14 @@ function initGame(id) {
 			window.history.pushState("", "", "?" + id);
 			console.log('joinGame("'+id+'")');
 			ui.displayGameUI();
+			setTimeout(() => {
+				$(".user").each(function(i){
+					setTimeout(()=>{
+						$(this).addClass("shown");
+					}, i * 100);
+				});
+				logged = true;
+			}, 1000);
 			game = {
 				settings: {
 					maxPlayers: 10,
@@ -90,6 +99,7 @@ function joinGame(id) {
 }
 
 function playerUpdate() {
+	me.info = KDform.objForm("#playerInfos");
 	gameSocket.emit("playerUpdate", game.users[0].info);
 }
 
@@ -128,7 +138,8 @@ function alert(msg) {
 	}, 4000);
 }
 function decode(e){
-	if (e.value.replace(/[0-9A-Z]{5}?/, "") == ""){
+	if (e.value.replace(/[0-9A-Za-z]{5}?/, "") == ""){
+		e.value = e.value.toUpperCase();
 		$.getJSON("https://api.cardcastgame.com/v1/decks/" + e.value, function(data){
 			$(e).parent().siblings("td[colspan=3]").html('<span style="color: var(--gc)">'+ data.name +"</span>");
 		}).fail(()=>{
@@ -156,3 +167,22 @@ function addDeck(e, n){
 		});
 	}
 }
+jQuery.fn.extend({
+	changeValue: function(value) {
+		var o = $(this);
+		var at = parseInt($(this).css("--at"));
+		var dur = at * 75;
+		$(this).css("transition", "all "+dur+"ms linear");
+		$(this).css("opacity", 0);
+		$(this).css("transform", "scale(.5)");
+		setTimeout(() => {
+			$(this).text(value);
+			$(this).css("opacity", "");
+			$(this).css("transform", "");
+			setTimeout(() => {
+				$(this).css("transition");
+			}, dur);
+		}, dur);
+		return this;
+	}
+});

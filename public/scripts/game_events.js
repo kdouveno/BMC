@@ -1,17 +1,37 @@
 ge = {
 	playerUpdate: function(data) {
 		Object.assign(game.users[data.id], data.user);
-		if (/modo|owner/.test(me.data.role))
-			$("fieldset.modOnly").removeAttr("disabled");
-		else {
-			$("fieldset.modOnly").attr("disabled", true);
-		}
+		var id = (typeof(data.id) == "number") ? "#0" : data.id.match(/#.*/)[0];
+		console.log(game.users[data.id].info.displayName);
+		$(id).css("--pc", "#" + game.users[data.id].info.color);
+		$(id).find("h3").changeValue(game.users[data.id].info.displayName);
 	},
 	loadUser: function(data) {
-		console.log("loaded " + data.id);
+		if (data.id == 0){
+			if (/modo|owner/.test(data.user.data.role))
+				$("fieldset.modOnly").removeAttr("disabled");
+			else {
+				$("fieldset.modOnly").attr("disabled", true);
+			}
+		}
 		if (u.isndef(game.users[data.id]))
 			game.users[data.id] = {};
 		Object.assign(game.users[data.id], data.user);
+		var id = (typeof(data.id) == "number") ? "#0" : data.id.match(/#.*/)[0];
+		if ($(id)[0])
+			$(id).remove();
+		$((data.user.data.spec ? "#spectatorsContainer" : "#playersContainer")).append(`<div id="`+ id.substring(1) +`" class="user" style="--pc: #`+ data.user.info.color +`">
+			<div class="hover"></div>
+			<div>
+				<h3>`+ data.user.info.displayName +`</h3>
+				<h5>`+ data.user.data.status +`</h5>
+			</div>
+			<div><h1>0</h1></div>
+		</div>`);
+		if (logged){
+			console.log($(id));
+			$(id).addClass("shown");
+		}
 	},
 	alert: function(msg) {
 		alert(msg);

@@ -1,0 +1,100 @@
+#userScrollContent{
+	height: calc(100% - 1.5em - 25px);
+	position: relative;
+}
+
+#usersContainer{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+}
+
+@keyframes userSpawn{
+	0%{
+		transform: scale(0);
+	}
+	100%{
+		transform: scale(1);
+	}
+}
+
+@keyframes userSpawnHover{
+	0%{
+		width: 100%;
+	}
+	100%{
+		width: 0%;
+	}
+}
+
+.user{
+	position: relative;
+	--pc: #ff3030;
+	box-sizing: border-box;
+	margin: 2px;
+	width: calc(100% - 4px);
+	border: 1px solid var(--pc);
+	border-left-width: 5px;
+	display: flex;
+	justify-content: space-between;
+	height: 64px;
+	transform: scale(0);
+	user-select: none;
+	transition: --pc .2s linear;
+}
+.user.shown{
+	animation: userSpawn calc(1s * var(--at)) var(--tf);
+	transform: scale(1);
+}
+.user>div:not(.hover){
+	margin: 10px;
+}
+.user h3{
+	margin: 0px 0px 5px 0px;
+}
+.user h1{
+	font-size: 40px;
+}
+.user>.hover{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: var(--pc);
+}
+.user.shown>.hover{
+	animation: userSpawnHover calc(1s * var(--at)) var(--tf) calc(1s * var(--at));
+	animation-fill-mode: both;
+}
+
+@keyframes propertyHoverChange{
+	0%{
+		transform: scale(1);
+		opacity: 1;
+	}
+	50%, 100%{
+		transform: scale(.8);
+		opacity: 0;
+	}
+}
+@keyframes propertyChange{
+	0%, 50%{
+		transform: scale(.8);
+		opacity: 0;
+	}
+	100%{
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+.property.start .anim.hover{
+	animation: propertyHoverChange calc(.2s * var(--at)) linear;
+}
+.property.start .anim:not(.hover){
+	animation: propertyChange calc(.2s * var(--at)) linear;
+}
+.property .anim.hover{
+	position: absolute;
+	opacity: 0;
+}

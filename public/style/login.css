@@ -7,6 +7,7 @@
 	position: fixed;
 	border-right: 100vw solid var(--pc);
 	background-color: var(--bc);
+	z-index: 10;
 }
 
 @keyframes hideLogin{
