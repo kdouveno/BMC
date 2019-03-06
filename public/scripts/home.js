@@ -22,7 +22,7 @@ function enter(){
 }
 
 function getToken(){
-	return window.location.href.split("?")[1];
+	return window.location.href.split("?")[1].split("&")[0];
 }
 
 function initGame(id) {
