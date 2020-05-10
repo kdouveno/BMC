@@ -16,12 +16,12 @@
 		<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 		<script src="scripts/jscolor.js"></script>
 		<script src="scripts/utils.js"></script>
-		<script src="scripts/game_events.js"></script>
-		<script src="scripts/home.js"></script>
-
+		<script src="scripts/socketEvents.js"></script>
 		<script src="scripts/login.js"></script>
 		<script src="scripts/ui.js"></script>
 		<script src="scripts/form.js"></script>
+		<script src="scripts/home.js"></script>
+
 	</head>
 	<body>
 		<div id="alertContainer">
@@ -36,7 +36,13 @@
 				<h1 style="font-size: 4em" class="noselect">BMC</h1>
 				<input name="displayName" id="refDisplayName" tabindex="0" type="text" placeholder="Display Name"/>
 				<input name="color" tabindex="0" id="refColor" class="jscolor {width: 484, height: 150, backgroundColor: '#272727', required: false, mode: 'S',  minS: 40, maxS: 75}" placeholder="User Color">
+				<div style="display: flex; justify-content: space-between; align-items: center;">
+					<h3>Spectator</h3>
+					<input name="spectator" type="checkbox" checked/>
+				</div>
 				<input name="token" id="tokenInput" tabindex="0" type="text" placeholder="Token" oninput="login.changeEnter(this)"/>
+				<input name="sessionToken" id="sessionTokenInput" tabindex="0" type="text" placeholder="Session token" oninput="login.changeEnter(this)"/>
+				
 				<div tabindex="0" id="enter" class="button inputPlus noselect" onclick="enter()">
 					<div>
 						<div class="newgame">NEW GAME</div>
