@@ -1,8 +1,8 @@
 u = {
-	isndef: function(o) {
-		return (typeof(o) === "undefined");
+	isndef: function (o) {
+		return typeof o === "undefined";
 	},
-	shuffle: function(t) {
+	shuffle: function (t) {
 		var out = [];
 		var tab = [].concat(t);
 		while (tab.length) {
@@ -11,14 +11,13 @@ u = {
 		}
 		return out;
 	},
-	registerEvents: function(soc, fxsObject) {
-		Object.keys(fxsObject).forEach(function(o) {
-			soc.on(o, function(data){
-				fxsObject[o](soc, data);
+	registerEvents: function (soc, fxsObject) {
+		Object.keys(fxsObject).forEach(function (o) {
+			soc.on(o, function (data) {
+				fxsObject[o](data, soc);
 			});
 		});
 	}
-}
+};
 
-if (typeof(module) !== "undefined")
-	module.exports = u;
+if (typeof module !== "undefined") module.exports = u;

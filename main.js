@@ -10,16 +10,18 @@ const userEvents	= require("./UserEvents.js");
 var bmc = {
 	users: {},
 	sessions: {},
-	rooms: {}	
+	rooms: {},
+	io: io
 }
 
 app.use(express.static("public"));
 
-io.on("connection", function(socket){
+io.sockets.on("connection", function(socket){
 	var userId = socket.handshake.query.userId;
 	var tmp;
-	if (u.isndef(bmc.users[userId]))
-	{
+	console.log("Io connection");
+	
+	if (u.isndef(bmc.users[userId])) {
 		console.log("New User Created");
 		tmp = new User();
 		bmc.users[tmp.uuid] = tmp;
@@ -29,7 +31,7 @@ io.on("connection", function(socket){
 		tmp = bmc.users[userId];
 		console.log("User Retreived")
 	}
-	socket.bmc_user = tmp;
+	socket.bmcUser = tmp;
 	socket.bmc = bmc;
 	u.registerEvents(socket, userEvents);
 });

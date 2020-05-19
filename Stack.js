@@ -12,10 +12,11 @@ module.exports = class Stack{
 		return this.pile.pop();
 	}
 
-	discard()
+	discard() {
 
-	generatePile()
-	{
+	}
+
+	generatePile() {
 		
 	}
 

@@ -6,26 +6,27 @@ module.exports = class Session{
 		this.uuid = uuid();
 		this.socket = socket;
 		this.room = room;
+		this.gameData = {
+			role: "player",
+			status: info.spectator ? "spectator" : "idle"
+		};
 		this.setInfo(info);
-		this.status = info.spectator ? "spectator" : "idle";
-		this.role = "player";
 
 		socket.bmc.sessions[this.uuid] = this;
-		socket.user.sessions[this.uuid] = this;
+		socket.bmcUser.sessions.set(this.uuid, this);
 	}
 
 	setInfo(info){
-		this.info = {
+		this.gameData.info = {
 			displayName: info.displayName,
 			color: info.color
 		}
 		if (u.isndef(this.refInfo))
-			this.refInfo = Object.assign({}, this.info);
+			this.gameData.refInfo = Object.assign({}, this.info);
 	}
 
 	resume(soc) {
 		console.log("Resume");
-		
 	}
 
 	destroy(dontBother) {
@@ -35,35 +36,7 @@ module.exports = class Session{
 		delete bmc.sessions[this.uuid];
 	}
 
-	setAdmin() {
-		if (!isndef(this.room.admin))
-			this.room.admin.role = "player";
-		this.room.admin = this;
-		this.role = "admin";
-	}
-
-	joinPlayers() {
-		if (!this.room.isPlayAvailable())
-			return false;
-		console.log("Join game");
-		this.socket.leave(this.room.uuid + "_spec");
-		this.room.specSessions.delete(this.uuid);
-		this.room.sessions.set(this.uuid, this);
-		if (this.room.ingame) {
-			if (this.room.midgameJoining) {
-				this.status = this.room.gameData.status;
-				this.socket.join(this.room.uuid + "_play");
-			} else {
-				this.status = "idle";
-				this.socket.join(this.room.uuid + "_spec");
-			}
-		} else {
-			this.status = "idle";
-			this.socket.join(this.room.uuid + "_play");
-		}
-		return true;
-	}
-
+	
 	leavePlayers() {
 		if (!this.room.isSpecAvailable())
 			return false;
@@ -80,7 +53,7 @@ module.exports = class Session{
 			this.room.specSessions.set(this.uuid, this);
 			this.socket.join(this.room.uuid + "_spec");
 		} else if (!spec && this.status == "spectator") {
-			this.joinPlayers();
+			this.room.join(this);
 		}
 	}
 }

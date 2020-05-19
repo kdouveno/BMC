@@ -1,11 +1,11 @@
 const uuid	= require("uuid/v1");
-const u		= require("./local/scripts/utils.js");
+const u		= require("./public/scripts/utils.js");
 const Stack	= require("./Stack.js");
 
 module.exports = class Room {
-	constructor (socket)
+	constructor (socket, id)
 	{
-		this.uuid = uuid();
+		this.id = !id ? uuid() : id;
 		this.sessions = new Map();
 		this.specSessions = new Map();
 		this.settings = {
@@ -27,12 +27,15 @@ module.exports = class Room {
 			status: "idle"
 		}
 		this.bmc = socket.bmc;
-		socket.bmc.rooms[this.uuid] = this;
+		socket.bmc.rooms[this.id] = this;
 	}
 
 	kick(session, reason, dontBother) {
 		this.sessions.delete(session.uuid);
 		this.specSessions.delete(session.uuid);
+		this.socket.leave(this.room.id + "_play");
+		this.socket.leave(this.room.id + "_spec");
+		this.socket.leave(this.room.id);
 		if (!dontBother){
 			if (this.sessions.size == 0)
 				this.deref();
@@ -41,24 +44,38 @@ module.exports = class Room {
 			if (!u.isndef(reason))
 				console.log("kicked " + session.uuid + "... reason: " + reason);
 		}
-		session.socket.leave(this.uuid);
+		session.socket.leave(this.id);
 	}
 
 	join(session) {
 		this.sessions.set(session.uuid, session);
 		var roomForPlayer = this.sessions.size < this.maxPlayers;
+		session.socket.join(this.uuid);
 		if (session.status == "spectator" || !roomForPlayer){
 			this.specSessions.set(session.uuid, session);
-			session.socket.join(this.uuid + "_spec");
+			session.socket.join(this.id + "_spec");
 			session.status = "spectator";
 		}
 		else {
 			this.sessions.set(session.uuid, session);
-			session.socket.join(this.uuid);
+			session.socket.join(this.id + "_play");
+			session.socket.emit("joinGame", session);
 			this.insertPlayer(session);
 		}
 		if (u.isndef(this.admin))
 			this.setAdmin(session);
+		this.insertPlayer(session);
+	}
+	setAdmin(session) {
+		if (!u.isndef(this.admin))
+			this.admin.role = "player";
+		this.admin = this;
+		session.role = "admin";
+	}
+	insertPlayer(session) {
+		console.log("player joined");
+		session.socket.emit("roomJoined");
+		this.bmc.io.to(this.id).emit("playerJoined", session.gameData);
 	}
 
 	hasRoom(spec) {
@@ -87,6 +104,11 @@ module.exports = class Room {
 
 	deref() {
 		this.purge();
-		delete this.bmc.rooms[this.uuid];
+		delete this.bmc.rooms[this.id];
+	}
+
+
+	emitPlayerJoined() {
+		this
 	}
 }

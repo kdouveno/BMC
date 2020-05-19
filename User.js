@@ -5,7 +5,7 @@ module.exports = class User {
 	constructor ()
 	{
 		this.uuid = uuid();
-		this.sessions = {};
+		this.sessions = new Map();
 	}
 
 	deleteSession(session) {
