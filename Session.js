@@ -1,19 +1,30 @@
 const uuid	= require("uuid/v1");
 const u		= require("./public/scripts/utils.js")
 
+const infoTemplate = {
+	type: "object",
+	test: ""
+}
+
 module.exports = class Session{
 	constructor (socket, room, info){
 		this.uuid = uuid();
 		this.socket = socket;
 		this.room = room;
+		this.publicId = uuid();
 		this.gameData = {
-			role: "player",
-			status: info.spectator ? "spectator" : "idle"
+			role: "player", // player | admin
+			status: info.spectator ? "spectator" : "idle", // idle | spectator | playing | choosing
+			reader: false,
+			info: {},
+			refInfo: {},
+			points: 0
 		};
 		this.setInfo(info);
 
 		socket.bmc.sessions[this.uuid] = this;
 		socket.bmcUser.sessions.set(this.uuid, this);
+		socket.bmcSession = this;
 	}
 
 	setInfo(info){
@@ -22,7 +33,7 @@ module.exports = class Session{
 			color: info.color
 		}
 		if (u.isndef(this.refInfo))
-			this.gameData.refInfo = Object.assign({}, this.info);
+			this.gameData.refInfo = Object.assign(this.gameData.refInfo, this.gameData.info);
 	}
 
 	resume(soc) {

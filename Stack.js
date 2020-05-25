@@ -13,12 +13,10 @@ module.exports = class Stack{
 	}
 
 	discard() {
-
+		
 	}
 
 	generatePile() {
 		
 	}
-
-	loadDecks
 }

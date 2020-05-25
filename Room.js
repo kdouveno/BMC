@@ -2,6 +2,7 @@ const uuid	= require("uuid/v1");
 const u		= require("./public/scripts/utils.js");
 const Stack	= require("./Stack.js");
 
+
 module.exports = class Room {
 	constructor (socket, id)
 	{
@@ -11,13 +12,14 @@ module.exports = class Room {
 		this.settings = {
 			maxPlayers: 10,
 			maxSpectators: 10,
+			nbrRound: 3,
+			locked: false,
+			canSurrender: true,
 			handLength: 11,
 			chooseTime: 60,
-			pickTime: 60,
 			pauseTime: 8,
-			midgameJoining: true,
-			allowMultiTabs: true,
-			SpectatorPeak: false,
+			// allowMultiTabs: true,
+			// SpectatorPeak: false,
 			kickAfks: true,
 			decks: new Map()
 		};
@@ -33,9 +35,9 @@ module.exports = class Room {
 	kick(session, reason, dontBother) {
 		this.sessions.delete(session.uuid);
 		this.specSessions.delete(session.uuid);
-		this.socket.leave(this.room.id + "_play");
-		this.socket.leave(this.room.id + "_spec");
-		this.socket.leave(this.room.id);
+		session.socket.leave(this.id + "_play");
+		session.socket.leave(this.id + "_spec");
+		session.socket.leave(this.id);
 		if (!dontBother){
 			if (this.sessions.size == 0)
 				this.deref();
@@ -44,13 +46,12 @@ module.exports = class Room {
 			if (!u.isndef(reason))
 				console.log("kicked " + session.uuid + "... reason: " + reason);
 		}
-		session.socket.leave(this.id);
 	}
 
 	join(session) {
 		this.sessions.set(session.uuid, session);
 		var roomForPlayer = this.sessions.size < this.maxPlayers;
-		session.socket.join(this.uuid);
+		session.socket.join(this.id);
 		if (session.status == "spectator" || !roomForPlayer){
 			this.specSessions.set(session.uuid, session);
 			session.socket.join(this.id + "_spec");
@@ -59,8 +60,6 @@ module.exports = class Room {
 		else {
 			this.sessions.set(session.uuid, session);
 			session.socket.join(this.id + "_play");
-			session.socket.emit("joinGame", session);
-			this.insertPlayer(session);
 		}
 		if (u.isndef(this.admin))
 			this.setAdmin(session);
@@ -68,17 +67,27 @@ module.exports = class Room {
 	}
 	setAdmin(session) {
 		if (!u.isndef(this.admin))
-			this.admin.role = "player";
+			this.admin.gameData.role = "player";
 		this.admin = this;
-		session.role = "admin";
+		session.gameData.role = "admin";
 	}
 	insertPlayer(session) {
 		console.log("player joined");
 		session.socket.emit("roomJoined");
-		this.bmc.io.to(this.id).emit("playerJoined", session.gameData);
+		session.socket.emit("me", [session.publicId, session.uuid]);
+		session.socket.in(this.id).emit("updatePlayers", {[session.publicId]: session.gameData})
+		this.UpdateAllPlayers(session);
+	}
+	UpdateAllPlayers(session) {
+		var out = {};
+		this.sessions.forEach((ses) => {
+			out[ses.publicId] = ses.gameData;
+		});
+		(session ? session.socket : this.bmc.io.to(this.id)).emit("updatePlayers", out);
 	}
 
 	hasRoom(spec) {
+		
 		if (spec) {
 			return this.isSpecAvailable();
 		} else {
@@ -87,10 +96,10 @@ module.exports = class Room {
 	}
 
 	isSpecAvailable() {
-		return this.specSessions.size < this.maxSpectators;
+		return this.specSessions.size < this.settings.maxSpectators;
 	}
 	isPlayAvailable() {
-		return this.sessions.size < this.maxSpectators;
+		return this.sessions.size < this.settings.maxPlayers;
 	}
 
 	purge() {

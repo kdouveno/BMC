@@ -11,17 +11,18 @@ module.exports = {
 				room = new Room(s, data.token); //create room and session
 				room.join(new Session(s, room, data));
 			} else  // if the session doesn't exist but the room deos
-				if (room.hasRoom(data.spectator))
+				if (room.hasRoom(data.spectator)){
 					room.join(new Session(s, room, data)); // try joining it
+				}
 		} else {
-			if (session.user == socket.bmc_user) { //if given session exist and socket's user owns it
+			if (session.user == s.bmc_user) { //if given session exist and socket's user owns it
 				notif(s, "Do you wanna resume this session ? (or kill it...)", function(res){ // prompt for directive
 					if (res)
 						session.resume(s);
 					else
 					{
 						session.room.kick();
-						delete s.bmc.sessions[sessions.uuid];
+						delete s.bmc.sessions[session.uuid];
 						this.knockRoom(s, data);
 					}
 				});
@@ -31,5 +32,10 @@ module.exports = {
 			}
 		}
 		
+	},
+	playerUpdate: function(data, s) {
+		if (s.session.gameData.role === "admin")
+			s.session.room.updateSettings(data);
+		else (emit)
 	}
 }

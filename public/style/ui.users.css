@@ -31,6 +31,7 @@
 .user{
 	position: relative;
 	--pc: #ff3030;
+	--delay: 0s;
 	box-sizing: border-box;
 	margin: 2px;
 	width: calc(100% - 4px);
@@ -42,10 +43,11 @@
 	transform: scale(0);
 	user-select: none;
 	transition: --pc .2s linear;
+	animation-fill-mode: forwards;
 }
 .user.shown{
-	animation: userSpawn calc(1s * var(--at)) var(--tf);
-	transform: scale(1);
+	animation: userSpawn calc(1s * var(--at)) var(--tf) var(--delay);
+	animation-fill-mode: forwards;
 }
 .user>div:not(.hover){
 	margin: 10px;
@@ -63,7 +65,7 @@
 	background-color: var(--pc);
 }
 .user.shown>.hover{
-	animation: userSpawnHover calc(1s * var(--at)) var(--tf) calc(1s * var(--at));
+	animation: userSpawnHover calc(1s * var(--at)) var(--tf) calc((1s + var(--delay)) * var(--at));
 	animation-fill-mode: both;
 }
 

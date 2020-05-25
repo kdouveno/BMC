@@ -12,8 +12,11 @@
 		<link rel="stylesheet" href="style/menus.css"/>
 		<link rel="stylesheet" href="style/alert.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+		<script src="scripts/lodash.js"></script>
 		<script src="scripts/jscolor.js"></script>
 		<script src="scripts/utils.js"></script>
 		<script src="scripts/socketEvents.js"></script>
@@ -21,7 +24,8 @@
 		<script src="scripts/ui.js"></script>
 		<script src="scripts/form.js"></script>
 		<script src="scripts/home.js"></script>
-
+		<script src="scripts/jsx/playerContainer.js"></script>
+		
 	</head>
 	<body>
 		<div id="alertContainer">
@@ -68,7 +72,6 @@
 								<use id="c1" href="#circle" x="100" y="70"/>
 								<use id="c2" href="#circle" x="190" y="150"/>
 								<use id="c3" href="#circle" x="140" y="230"/>
-
 							</def>
 							<clipPath id="clip" style="clip-rule: evenodd;" class="m">
 								<path d="	M 0 0 h 300 v 300 h -300 Z
@@ -131,20 +134,16 @@
 										<td><input name="canSurrender" type="checkbox" checked/></td>
 									</tr>
 									<tr>
-										<td>AFKTime</td>
-										<td><input name="AFKTime" value="90000" type="number"/></td>
+										<td>chooseTime</td>
+										<td><input name="chooseTime" value="60" type="number"/></td>
 									</tr>
 									<tr>
-										<td>AFKkick</td>
+										<td>pauseTime</td>
 										<td><input name="AFKkick" checked type="checkbox"/></td>
 									</tr>
 									<tr>
-										<td>gameMode</td>
-										<td><input name="gameMode" value="1by1"/></td>
-									</tr>
-									<tr>
 										<td>handLength</td>
-										<td><input name="handLength" value=7 type="number"/></td>
+										<td><input name="handLength" value=11 type="number"/></td>
 									</tr>
 								</table>
 								<div tabindex="0" class="button inputPlus noselect" onclick="updateSettings();">
@@ -251,6 +250,7 @@
 							<div class="title">
 								<h2>Players</h2>
 							</div>
+							<div id="playerList"></div>
 						</div>
 						<div id="spectatorsContainer">
 							<div class="title">
