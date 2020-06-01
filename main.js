@@ -36,6 +36,6 @@ io.sockets.on("connection", function(socket){
 	u.registerEvents(socket, userEvents);
 });
 
-http.listen(8080, function(){
-	console.log("listening to 8080");
+http.listen(25565, function(){
+	console.log("listening to 25565");
 });
