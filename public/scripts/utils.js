@@ -25,8 +25,7 @@ var u = {
 			});
 		});
 	},
-	getUrlVars: function()
-	{
+	getUrlVars: function() {
 		var vars = [], hash;
 		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 		for(var i = 0; i < hashes.length; i++)
@@ -37,8 +36,7 @@ var u = {
 		}
 		return vars;
 	},
-	assignForm(id, obj)
-	{
+	assignForm(id, obj) {
 		Object.keys(obj).forEach(k => {
 			var e = $("form#" + id + " input[name=" + k + "]");
 			if (e.is("[type=checkbox]")) {
@@ -46,12 +44,17 @@ var u = {
 					e.attr("checked", null);
 				else
 					e.attr("checked", "checked");
-			}
-			else {
+			} else {
 				e.val(obj[k]);
 			}
 			e.trigger("input");
 		});
+	},
+	strictTest(str, rgx) {
+		var test = str.match(rgx);
+		if (test)
+			return test[0] == str;
+		return false;
 	}
 }
 

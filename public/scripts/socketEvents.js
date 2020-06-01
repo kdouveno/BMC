@@ -4,13 +4,15 @@ var socketEvents = {
 		localStorage.userId = uuid;
 	},
 	notification: function(data) {
-		console.log("Notification: \"" + data.msg + "\", " + (data.choice ? "yes or no?" : ".") + "\n promptToken: " + data.promptToken);
+		console.log("Notification:", data.msg, "\n" + (data.choice ? "yes or no?" : ".") + "\n promptToken: " + data.promptToken);
 	},
 	roomJoined: function() {
 		ui.displayGameUI();
 	},
 	playerJoined: function(data) {
 		console.log("playerJoined Trigered: ", data);
+	},
+	updateSettings: function(data) {
+		KDform.inject("#gameSettings", data);
 	}
-	
 }

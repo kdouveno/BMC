@@ -12,6 +12,8 @@ var Player = function(props)
 	);
 }
 
+var ExternPlayersState;
+
 var PlayerContainer = class extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,12 +22,12 @@ var PlayerContainer = class extends React.Component {
 			me: "",
 			show: 0
 		}
+		ExternPlayersState = this.state;
 		this.events = {
 			me: (data) => {
 				console.log("me: " + data);
-				this.setState({
-					me: data[0],
-				});
+				this.state.me = data[0];
+				this.setState(this.state);
 				var href = window.location.href;
 				console.log(href);
 				

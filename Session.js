@@ -1,10 +1,6 @@
 const uuid	= require("uuid/v1");
-const u		= require("./public/scripts/utils.js")
-
-const infoTemplate = {
-	type: "object",
-	test: ""
-}
+const u		= require("./public/scripts/utils.js");
+const notif = require("./Notification.js");
 
 module.exports = class Session{
 	constructor (socket, room, info){
@@ -27,17 +23,40 @@ module.exports = class Session{
 		socket.bmcSession = this;
 	}
 
-	setInfo(info){
+	checkInfo(info) {
+		var toThrow = [];
+		console.log(info);
+		console.log(info);
+		if (typeof(info.displayName) !== "string" && typeof(info.color) !== "string")
+			toThrow.push("Some input aren't of the good type. Are you trying to mess with us?");
+		if (info.displayName.length < 1 & info.displayName.length <= 15)
+			toThrow.push("DisplayName must be 1 character long minimum.");
+		if (!u.strictTest(info.color, /[0-9a-fA-F]{6}/))
+			toThrow.push("Color must be an hexadecimal color code");
+		if (toThrow.length) {
+			console.log("sauce");
+			throw toThrow;
+		}
+	}
+	setInfo(info) {
+		this.checkInfo(info);
 		this.gameData.info = {
 			displayName: info.displayName,
 			color: info.color
 		}
 		if (u.isndef(this.refInfo))
 			this.gameData.refInfo = Object.assign(this.gameData.refInfo, this.gameData.info);
+		return true;
+	}
+
+	update(othersOnly) {
+		(othersOnly ? this.socket : this.room.bmc.io).to(this.room.id).emit("updatePlayers", {[this.publicId]: this.gameData});
 	}
 
 	resume(soc) {
-		console.log("Resume");
+		this.socket = soc;
+		soc.bmcSession = this;
+		this.room.insertPlayer(this);
 	}
 
 	destroy(dontBother) {
@@ -56,6 +75,22 @@ module.exports = class Session{
 		this.room.sessions.remove(this.uuid);
 		this.socket.leave(this.room.uuid + "_play");
 		return true;
+	}
+
+	kick(reason, dontBother) {
+		this.room.sessions.delete(this.uuid);
+		this.room.specSessions.delete(this.uuid);
+		this.socket.leave(this.room.id + "_play");
+		this.socket.leave(this.room.id + "_spec");
+		this.socket.leave(this.room.id);
+		if (!dontBother){
+			if (this.room.sessions.size == 0)
+				this.room.deref();
+			else if (session == admin)
+				this.room.setAdmin();
+			if (!u.isndef(reason))
+				console.log("kicked " + this.gameData.info.displayName + " (" + this.uuid + ") ... reason: " + reason);
+		}
 	}
 
 	setSpectator(spec) {

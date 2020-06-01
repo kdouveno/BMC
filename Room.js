@@ -1,6 +1,7 @@
 const uuid	= require("uuid/v1");
 const u		= require("./public/scripts/utils.js");
 const Stack	= require("./Stack.js");
+const _		= require("./public/scripts/lodash.js");
 
 
 module.exports = class Room {
@@ -21,8 +22,8 @@ module.exports = class Room {
 			// allowMultiTabs: true,
 			// SpectatorPeak: false,
 			kickAfks: true,
-			decks: new Map()
 		};
+		this.decks = {},
 		this.gameData = {
 			ingame: false,
 			stack: new Stack(),
@@ -32,21 +33,7 @@ module.exports = class Room {
 		socket.bmc.rooms[this.id] = this;
 	}
 
-	kick(session, reason, dontBother) {
-		this.sessions.delete(session.uuid);
-		this.specSessions.delete(session.uuid);
-		session.socket.leave(this.id + "_play");
-		session.socket.leave(this.id + "_spec");
-		session.socket.leave(this.id);
-		if (!dontBother){
-			if (this.sessions.size == 0)
-				this.deref();
-			else if (session == admin)
-				this.setAdmin();
-			if (!u.isndef(reason))
-				console.log("kicked " + session.uuid + "... reason: " + reason);
-		}
-	}
+	
 
 	join(session) {
 		this.sessions.set(session.uuid, session);
@@ -75,7 +62,7 @@ module.exports = class Room {
 		console.log("player joined");
 		session.socket.emit("roomJoined");
 		session.socket.emit("me", [session.publicId, session.uuid]);
-		session.socket.in(this.id).emit("updatePlayers", {[session.publicId]: session.gameData})
+		session.update(true);
 		this.UpdateAllPlayers(session);
 	}
 	UpdateAllPlayers(session) {
@@ -115,9 +102,34 @@ module.exports = class Room {
 		this.purge();
 		delete this.bmc.rooms[this.id];
 	}
+	
+	checkSettings(settings) {
+		if (typeof(settings) !== "object"
+		||	typeof(settings.maxPlayers) !== "number"
+		||	typeof(settings.maxSpectators) !== "number"
+		||	typeof(settings.nbrRound) !== "number"
+		||	typeof(settings.locked) !== "boolean"
+		|| 	typeof(settings.canSurrender) !== "boolean"
+		||	typeof(settings.chooseTime) !== "number"
+		||	typeof(settings.AFKkick) !== "boolean"
+		||	typeof(settings.handLength) !== "number")
+		{
+			console.log(typeof(settings));
+			console.log(typeof(settings.maxPlayers));
+			console.log(typeof(settings.maxSpectators));
+			console.log(typeof(settings.locked));
+			console.log(typeof(settings.canSurrender));
+			console.log(typeof(settings.chooseTime));
+			console.log(typeof(settings.AFKkick));
+			console.log(typeof(settings.handLength));
+			
+			throw ("Some input aren't of the good type. Are you trying to mess with us?");
+		}
+	}
 
-
-	emitPlayerJoined() {
-		this
+	updateSettings(settings) {
+		this.checkSettings(settings);
+		_.merge(this.settings, settings);
+		this.bmc.io.to(this.id).emit("updateSettings", this.settings);
 	}
 }

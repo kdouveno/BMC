@@ -10,11 +10,11 @@ $(document).ready(function(){
 	KDformInit();
 	u.registerEvents(socket, socketEvents);
 	ReactDOM.render(playerList, document.getElementById("playerList"));
-	var query =  u.getUrlVars();
+	var query = u.getUrlVars();
 	u.assignForm("login", query);
 	if (query.direct)
 		enter();
-});
+}); 
 
 function enter(){
 	var userPrefs = KDform.objForm("#login");
@@ -53,12 +53,17 @@ function addDeck(e, n){
 		});
 	}
 }
-function playerUpdate()
-{
-	var obj = KDform.objForm("#playerInfos");
-	console("Updating settings");
+function playerUpdate() {
+	var obj = KDform.objForm("playerInfos");
+	console.log("Updating User");
 	console.log(obj);
-	socket.emit("updateSettings", obj);
-
-	obj.
+	socket.emit("playerUpdate", obj);
+}
+function settingsUpdate() {
+	if (ExternPlayersState.players[ExternPlayersState.me].role == "admin") {
+		var obj = KDform.objForm("#gameSettings");
+		console.log(obj);
+		socket.emit("settingsUpdate", obj);
+	}
+	
 }
