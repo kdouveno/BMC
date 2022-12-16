@@ -54,7 +54,7 @@ function addDeck(e, n){
 	}
 }
 function playerUpdate() {
-	var obj = KDform.objForm("playerInfos");
+	var obj = KDform.objForm("#playerInfos");
 	console.log("Updating User");
 	console.log(obj);
 	socket.emit("playerUpdate", obj);

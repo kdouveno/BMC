@@ -47,12 +47,12 @@ module.exports = {
 		
 	},
 	playerUpdate: function(data, s) {
-		try {
-			s.session.setInfos(data)
-			s.session.update();
-		} catch (e) {
-			notif(s, e);
-		}
+		// try {
+			s.bmcSession.setInfos(data);
+			s.bmcSession.update();
+		// } catch (e) {
+			// notif(s, e);
+		// }
 	},
 	settingsUpdate: function(data, s) {
 		if (s.bmcSession.gameData.role == "admin") {

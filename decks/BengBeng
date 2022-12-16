@@ -1,0 +1,23 @@
+{
+	"name": "...",
+	"author": "...",
+	"languages": "fr",
+	"code5": "12345",
+	"nsfw": true,
+	"deck": {
+		"calls": [
+			{
+				"content": "exemple: un trou est représenté par un signe dollar : $, un deuxième trou: $, etc..."
+			}
+		],
+		"res": [
+			{
+				"content": "Un exemple de contenu"
+			}
+		]
+	},
+	"log": {
+		"creation": 4904564608413,
+		"lastEdit": 4658429684562
+	}
+}

@@ -16,7 +16,7 @@ module.exports = class Session{
 			refInfo: {},
 			points: 0
 		};
-		this.setInfo(info);
+		this.setInfos(info);
 
 		socket.bmc.sessions[this.uuid] = this;
 		socket.bmcUser.sessions.set(this.uuid, this);
@@ -28,21 +28,21 @@ module.exports = class Session{
 		console.log(info);
 		console.log(info);
 		if (typeof(info.displayName) !== "string" && typeof(info.color) !== "string")
-			toThrow.push("Some input aren't of the good type. Are you trying to mess with us?");
+			throw "Some input aren't of the good type. Are you trying to mess with us?";
 		if (info.displayName.length < 1 & info.displayName.length <= 15)
 			toThrow.push("DisplayName must be 1 character long minimum.");
-		if (!u.strictTest(info.color, /[0-9a-fA-F]{6}/))
+		if (info.color !== "" && !u.strictTest(info.color, /[0-9a-fA-F]{6}/))
 			toThrow.push("Color must be an hexadecimal color code");
 		if (toThrow.length) {
 			console.log("sauce");
 			throw toThrow;
 		}
 	}
-	setInfo(info) {
+	setInfos(info) {
 		this.checkInfo(info);
 		this.gameData.info = {
 			displayName: info.displayName,
-			color: info.color
+			color: (info.color == "" ? this.gameData.info.color : info.color)
 		}
 		if (u.isndef(this.refInfo))
 			this.gameData.refInfo = Object.assign(this.gameData.refInfo, this.gameData.info);
