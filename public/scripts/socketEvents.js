@@ -6,7 +6,8 @@ var socketEvents = {
 	notification: function(data) {
 		console.log("Notification:", data.msg, "\n" + (data.choice ? "yes or no?" : ".") + "\n promptToken: " + data.promptToken);
 	},
-	roomJoined: function() {
+	roomJoined: function(roomId) {
+		u.href.append("token", roomId);
 		ui.displayGameUI();
 	},
 	playerJoined: function(data) {
