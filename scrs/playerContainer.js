@@ -28,19 +28,7 @@ var PlayerContainer = class extends React.Component {
 				console.log("me: " + data);
 				this.state.me = data[0];
 				this.setState(this.state);
-				var href = window.location.href;
-				console.log(href);
-				
-				if (href.includes("sessionToken")) {
-					href = href.replace(/sessionToken=[\w-]*/, "sessionToken=" + data[1]);
-				} else {
-					if (href.includes("?"))
-						href += "&";
-					else
-						href += "?";
-					href += "sessionToken=" + data[1];
-				}
-				history.pushState({}, '', href);
+				// u.href.append("sessionToken", data[1]);
 			},
 			updatePlayers: (data) => {
 				console.log(data);

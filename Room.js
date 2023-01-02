@@ -60,7 +60,7 @@ module.exports = class Room {
 	}
 	insertPlayer(session) {
 		console.log("player joined");
-		session.socket.emit("roomJoined");
+		session.socket.emit("roomJoined", this.id);
 		session.socket.emit("me", [session.publicId, session.uuid]);
 		session.update(true);
 		this.UpdateAllPlayers(session);

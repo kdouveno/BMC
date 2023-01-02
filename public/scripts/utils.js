@@ -1,8 +1,8 @@
 var u = {
-	isndef: function(o) {
+	isndef(o) {
 		return (typeof(o) === "undefined");
 	},
-	shuffle: function(t) {
+	shuffle(t) {
 		var out = [];
 		var tab = [].concat(t);
 		while (tab.length) {
@@ -55,6 +55,23 @@ var u = {
 		if (test)
 			return test[0] == str;
 		return false;
+	},
+	href: {
+		append(query, value){
+			if (typeof(query) !== "string")
+				throw "invalid type";
+			var href = window.location.href;
+			if (href.includes(query)) {
+				href = href.replace(new RegExp(`${query}=[\\w-]*`), query + "=" + value);
+			} else {
+				if (href.includes("?"))
+					href += "&";
+				else
+					href += "?";
+				href += query + "=" + value;
+			}
+			history.pushState({}, '', href);
+		}
 	}
 }
 
