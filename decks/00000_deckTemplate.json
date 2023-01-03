@@ -1,0 +1,19 @@
+{
+	"name": "Template",
+	"author": "Isordee",
+	"languages": "en",
+	"code5": "00000",
+	"nsfw": true,
+	"deck": {
+		"calls": [
+			{"content": ""}
+		],
+		"res": [
+			{"content": "Un exemple de contenu"}
+		]
+	},
+	"log": {
+		"creation": 0,
+		"lastEdit": 0
+	}
+}
