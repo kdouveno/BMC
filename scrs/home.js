@@ -9,7 +9,7 @@ var playerList = <PlayerContainer />
 $(document).ready(function(){
 	KDformInit();
 	u.registerEvents(socket, socketEvents);
-	ReactDOM.render(playerList, document.getElementById("playerList"));
+	ReactDOM.render(playerList, document.getElementById("userScrollContent"));
 	var query = u.getUrlVars();
 	u.assignForm("login", query);
 	if (query.direct)
