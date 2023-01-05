@@ -6,7 +6,10 @@
 	"nsfw": true,
 	"deck": {
 		"calls": [
-			{"content": "Coming to Broadway this season, $: The Musical !"},
+			{
+				"content": "Coming to Broadway this season, $: The Musical !",
+				"nbrRes": 1
+			},
 			{"content": "$. That's how I want to die."},
 			{"content": "TSA guidelines now prohibit $ on ariplanes."},
 			{"content": "Maybe she's born with it. Maybe it's $."},
