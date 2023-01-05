@@ -4,9 +4,9 @@ const Room			= require("./Room.js");
 const Session		= require("./Session.js");
 module.exports = {
 	knockRoom: function(data, s) { // optimisation
-		var session = s.bmc.sessions[data.sessionToken]
+		var session = BMCs.sessions[data.sessionToken] // fecth session via session token
 		if (u.isndef(session)) { // if given session id doesn't already exist 
-			var room = s.bmc.rooms[data.token];
+			var room = BMCs.rooms[data.token]; // fecth room via roomToken
 			if (u.isndef(room)) { // and so doesn't given room id
 				try {
 					room = new Room(s, data.token); //create room and session
@@ -35,8 +35,8 @@ module.exports = {
 					else
 					{
 						session.kick();
-						delete s.bmc.sessions[session.uuid];
-						this.knockRoom(s, data);
+						delete BMCs.sessions[session.uuid];
+						this.knockRoom(data, s);
 					}
 				});
 			}

@@ -29,8 +29,7 @@ module.exports = class Room {
 			stack: new Stack(),
 			status: "idle"
 		}
-		this.bmc = socket.bmc;
-		socket.bmc.rooms[this.id] = this;
+		BMCs.rooms[this.id] = this;
 	}
 
 	
@@ -70,7 +69,7 @@ module.exports = class Room {
 		this.sessions.forEach((ses) => {
 			out[ses.publicId] = ses.gameData;
 		});
-		(session ? session.socket : this.bmc.io.to(this.id)).emit("updatePlayers", out);
+		(session ? session.socket : BMCs.io.to(this.id)).emit("updatePlayers", out);
 	}
 
 	hasRoom(spec) {
@@ -100,7 +99,7 @@ module.exports = class Room {
 
 	deref() {
 		this.purge();
-		delete this.bmc.rooms[this.id];
+		delete BMCs.rooms[this.id];
 	}
 	
 	checkSettings(settings) {
@@ -130,6 +129,6 @@ module.exports = class Room {
 	updateSettings(settings) {
 		this.checkSettings(settings);
 		_.merge(this.settings, settings);
-		this.bmc.io.to(this.id).emit("updateSettings", this.settings);
+		io.to(this.id).emit("updateSettings", this.settings);
 	}
 }

@@ -18,15 +18,13 @@ module.exports = class Session{
 		};
 		this.setInfos(info);
 
-		socket.bmc.sessions[this.uuid] = this;
+		BMCs.sessions[this.uuid] = this;
 		socket.bmcUser.sessions.set(this.uuid, this);
 		socket.bmcSession = this;
 	}
 
 	checkInfo(info) {
 		var toThrow = [];
-		console.log(info);
-		console.log(info);
 		if (typeof(info.displayName) !== "string" && typeof(info.color) !== "string")
 			throw "Some input aren't of the good type. Are you trying to mess with us?";
 		if (info.displayName.length < 1 & info.displayName.length <= 15)
@@ -50,7 +48,7 @@ module.exports = class Session{
 	}
 
 	update(othersOnly) {
-		(othersOnly ? this.socket : this.room.bmc.io).to(this.room.id).emit("updatePlayers", {[this.publicId]: this.gameData});
+		(othersOnly ? this.socket : BMCs.io).to(this.room.id).emit("updatePlayers", {[this.publicId]: this.gameData});
 	}
 
 	resume(soc) {
@@ -60,10 +58,9 @@ module.exports = class Session{
 	}
 
 	destroy(dontBother) {
-		var bmc = this.socket.bmc;
-		bmc.user.deleteSession(this);
+		BMCs.user.deleteSession(this);
 		this.room.kick(this, "session destroyed", dontBother);
-		delete bmc.sessions[this.uuid];
+		delete BMCs.sessions[this.uuid];
 	}
 
 	

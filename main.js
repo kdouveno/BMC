@@ -2,17 +2,18 @@ const express		= require("express");
 const app			= express();
 const http			= require("http").Server(app);
 const io			= require("socket.io")(http);
-const u				= require("./public/scripts/utils.js");
-const Session		= require("./Session.js");
-const User			= require("./User.js");
-const userEvents	= require("./UserEvents.js");
 
-var bmc = {
+BMCs = { //BMC Server
 	users: {},
 	sessions: {},
 	rooms: {},
 	io: io
 }
+
+const u				= require("./public/scripts/utils.js");
+const Session		= require("./Session.js");
+const User			= require("./User.js");
+const userEvents	= require("./UserEvents.js");
 
 app.use(express.static("public"));
 
@@ -21,18 +22,17 @@ io.sockets.on("connection", function(socket){
 	var tmp;
 	console.log("Io connection");
 	
-	if (u.isndef(bmc.users[userId])) {
+	if (u.isndef(BMCs.users[userId])) {
 		console.log("New User Created");
 		tmp = new User();
-		bmc.users[tmp.uuid] = tmp;
+		BMCs.users[tmp.uuid] = tmp;
 		userId = tmp.uuid;
 		socket.emit("newUserId", tmp.uuid);
 	} else {
-		tmp = bmc.users[userId];
+		tmp = BMCs.users[userId];
 		console.log("User Retreived")
 	}
 	socket.bmcUser = tmp;
-	socket.bmc = bmc;
 	u.registerEvents(socket, userEvents);
 });
 

@@ -9,13 +9,12 @@ module.exports = class User {
 	}
 
 	deleteSession(session) {
-		var bmc = session.socket.bmc;
 		delete this.sessions[session.uuid];
 		if (Object.keys(this.sessions).length == 0)
 			this.delete();
 	}
 
 	delete() {
-		delete bmc.users[this.uuid];
+		delete BMCs.users[this.uuid];
 	}
 }
