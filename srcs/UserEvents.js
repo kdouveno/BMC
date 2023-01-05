@@ -1,4 +1,4 @@
-const u				= require("./public/scripts/utils.js");
+const u				= require("../public/scripts/utils.js");
 const notif			= require("./Notification.js");
 const Room			= require("./Room.js");
 const Session		= require("./Session.js");

@@ -10,7 +10,7 @@ BMCs = { //BMC Server
 	io: io
 }
 
-const u				= require("./public/scripts/utils.js");
+const u				= require("../public/scripts/utils.js");
 const Session		= require("./Session.js");
 const User			= require("./User.js");
 const userEvents	= require("./UserEvents.js");

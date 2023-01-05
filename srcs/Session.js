@@ -1,5 +1,5 @@
 const uuid	= require("uuid/v1");
-const u		= require("./public/scripts/utils.js");
+const u		= require("../public/scripts/utils.js");
 const notif = require("./Notification.js");
 
 module.exports = class Session{
