@@ -58,7 +58,7 @@ var PlayerContainer = class extends React.Component {
 					</div>
 					<div id="playerList">
 					{
-						Object.keys(this.state.players).filter(o=>this.state.players[o].status !== "spectator").map(o => {
+						Object.keys(this.state.players).filter(o=>!this.state.players[o].spectator).map(o => {
 							return <Player key={o} me={this.state.me == o} show={!!this.state.show} delay={this.state.show == 1 ? 1.5 + i++ * .2 : 0} gamedata={this.state.players[o]} />
 						})
 					}
@@ -70,7 +70,7 @@ var PlayerContainer = class extends React.Component {
 					</div>
 					<div id="spectatorList">
 					{
-						Object.keys(this.state.players).filter(o=>this.state.players[o].status === "spectator").map(o => {
+						Object.keys(this.state.players).filter(o=>this.state.players[o].spectator).map(o => {
 							return <Player key={o} me={this.state.me == o} show={!!this.state.show} delay={this.state.show == 1 ? 1.5 + i++ * .2 : 0} gamedata={this.state.players[o]} />
 						})
 					}

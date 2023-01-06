@@ -9,7 +9,7 @@ module.exports = {
 			var room = BMCs.rooms[data.token]; // fecth room via roomToken
 			if (u.isndef(room)) { // and so doesn't given room id
 				try {
-					room = new Room(s, data.token); //create room and session
+					room = new Room(data.token); //create room and session
 					room.join(new Session(s, room, data));
 				} catch (e) {
 					delete room;

@@ -1,13 +1,39 @@
 const uuid	= require("uuid/v1");
 const u		= require("../public/scripts/utils.js");
-const Stack	= require("./Stack.js");
 const _		= require("../public/scripts/lodash.js");
+const Deck	= require("./Deck.js");
+class Cards {
+	constructor(room){
+		this.room =	room;
+		this.busy = false;			// true while loading decks
+		this.decks = [];			// the List of decks that defines all the indexes must not change while in-game
+		this.callStock = [];
+		this.callWaste = [];
+		this.resStock = [];
+		this.resWaste = [];
+	}
 
+	addDeck(code5){
+		if(this.decks.find(o=>o.code5 = code5))
+			return ;
+		this.busy = true;
+		new Deck(code5, (self)=>{
+			this.decks.push(self);
+			this.busy = false;
+		});
+	}
 
+	init(){
+		u.shuffle(this.decks.map((d, i)=>d.getCallStock().map(c=>[i, c])));
+		u.shuffle(this.decks.map((d, i)=>d.getResStock().map(c=>[i, c])));
+	}
+}
 module.exports = class Room {
-	constructor (socket, id)
+	constructor (id)
 	{
 		this.id = !id ? uuid() : id;
+		this.sid = id + "_spec";
+		this.pid = id + "_play";
 		this.sessions = new Map();
 		this.specSessions = new Map();
 		this.settings = {
@@ -23,29 +49,29 @@ module.exports = class Room {
 			// SpectatorPeak: false,
 			kickAfks: true,
 		};
-		this.decks = {},
+		this.cards = new Cards();
 		this.gameData = {
 			ingame: false,
-			stack: new Stack(),
 			status: "idle"
 		}
 		BMCs.rooms[this.id] = this;
 	}
 
-	
+	gameStart(){
+
+	}
 
 	join(session) {
 		this.sessions.set(session.uuid, session);
 		var roomForPlayer = this.sessions.size < this.maxPlayers;
 		session.socket.join(this.id);
-		if (session.status == "spectator" || !roomForPlayer){
+		if (session.gameData.spectator || !roomForPlayer){
 			this.specSessions.set(session.uuid, session);
-			session.socket.join(this.id + "_spec");
-			session.status = "spectator";
+			session.socket.join(this.sid);
 		}
 		else {
 			this.sessions.set(session.uuid, session);
-			session.socket.join(this.id + "_play");
+			session.socket.join(this.pid);
 		}
 		if (u.isndef(this.admin))
 			this.setAdmin(session);
@@ -61,19 +87,17 @@ module.exports = class Room {
 		console.log("player joined");
 		session.socket.emit("roomJoined", this.id);
 		session.socket.emit("me", [session.publicId, session.uuid]);
-		session.update(true);
-		this.UpdateAllPlayers(session);
+		this.UpdateAllPlayers();
 	}
-	UpdateAllPlayers(session) {
+	UpdateAllPlayers() {
 		var out = {};
 		this.sessions.forEach((ses) => {
 			out[ses.publicId] = ses.gameData;
 		});
-		(session ? session.socket : BMCs.io.to(this.id)).emit("updatePlayers", out);
+		BMCs.io.to(this.id).emit("updatePlayers", out);
 	}
 
 	hasRoom(spec) {
-		
 		if (spec) {
 			return this.isSpecAvailable();
 		} else {

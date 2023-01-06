@@ -9,14 +9,20 @@ module.exports = class Session{
 		this.room = room;
 		this.publicId = uuid();
 		this.gameData = {
-			role: "player", // player | admin
-			status: info.spectator ? "spectator" : "idle", // idle | spectator | playing | choosing
+			admin: false,
+			spectator: info.spectator,
+			status: "idle", // idle | spectator | playing | choosing
 			reader: false,
 			info: {},
 			refInfo: {},
 			points: 0
 		};
-		this.setInfos(info);
+		this.hand = [];
+		try{
+			this.setInfos(info);
+		} catch (e){
+			notif(s, e);
+		}
 
 		BMCs.sessions[this.uuid] = this;
 		socket.bmcUser.sessions.set(this.uuid, this);
@@ -47,8 +53,8 @@ module.exports = class Session{
 		return true;
 	}
 
-	update(othersOnly) {
-		(othersOnly ? this.socket : BMCs.io).to(this.room.id).emit("updatePlayers", {[this.publicId]: this.gameData});
+	update() {
+		BMCs.io.to(this.room.id).emit("updatePlayers", {[this.publicId]: this.gameData});
 	}
 
 	resume(soc) {
@@ -68,17 +74,17 @@ module.exports = class Session{
 		if (!this.room.isSpecAvailable())
 			return false;
 		console.log("Leave game");
-		this.status = "spectator";
+		this.gameData.spectator = true;
 		this.room.sessions.remove(this.uuid);
-		this.socket.leave(this.room.uuid + "_play");
+		this.socket.leave(this.room.pid);
 		return true;
 	}
 
 	kick(reason, dontBother) {
 		this.room.sessions.delete(this.uuid);
 		this.room.specSessions.delete(this.uuid);
-		this.socket.leave(this.room.id + "_play");
-		this.socket.leave(this.room.id + "_spec");
+		this.socket.leave(this.room.pid);
+		this.socket.leave(this.room.sid);
 		this.socket.leave(this.room.id);
 		if (!dontBother){
 			if (this.room.sessions.size == 0)
@@ -91,11 +97,11 @@ module.exports = class Session{
 	}
 
 	setSpectator(spec) {
-		if (spec && this.status != "spectator") {
+		if (spec && !this.gameData.spectator) {
 			this.leaveGame();
 			this.room.specSessions.set(this.uuid, this);
-			this.socket.join(this.room.uuid + "_spec");
-		} else if (!spec && this.status == "spectator") {
+			this.socket.join(this.room.sid);
+		} else if (!spec && this.gameData.spectator) {
 			this.room.join(this);
 		}
 	}
