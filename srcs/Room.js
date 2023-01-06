@@ -3,8 +3,7 @@ const u		= require("../public/scripts/utils.js");
 const _		= require("../public/scripts/lodash.js");
 const Deck	= require("./Deck.js");
 class Cards {
-	constructor(room){
-		this.room =	room;
+	constructor(){
 		this.busy = false;			// true while loading decks
 		this.decks = [];			// the List of decks that defines all the indexes must not change while in-game
 		this.callStock = [];
@@ -52,18 +51,19 @@ module.exports = class Room {
 		this.cards = new Cards();
 		this.gameData = {
 			ingame: false,
-			status: "idle"
+			plOrder: []
 		}
 		BMCs.rooms[this.id] = this;
 	}
 
 	gameStart(){
-
+		this.gameData.ingame = true;
+		this.cards.init();
+		this.gameData.plOrder = u.shuffle(this.sessions.keys());
 	}
 
 	join(session) {
-		this.sessions.set(session.uuid, session);
-		var roomForPlayer = this.sessions.size < this.maxPlayers;
+		var roomForPlayer = this.sessions.size < this.settings.maxPlayers;
 		session.socket.join(this.id);
 		if (session.gameData.spectator || !roomForPlayer){
 			this.specSessions.set(session.uuid, session);
@@ -91,18 +91,25 @@ module.exports = class Room {
 	}
 	UpdateAllPlayers() {
 		var out = {};
-		this.sessions.forEach((ses) => {
+		if (this.gameData.ingame) {
+			this.gameData.plOrder.forEach(o=>{
+				out[o] = this.sessions.get(o).gameData;
+			});
+		} else {
+			this.sessions.forEach((ses) => {
+				out[ses.publicId] = ses.gameData;
+			});
+		}
+		this.specSessions.forEach((ses) => {
 			out[ses.publicId] = ses.gameData;
 		});
 		BMCs.io.to(this.id).emit("updatePlayers", out);
 	}
 
 	hasRoom(spec) {
-		if (spec) {
+		if (spec || !this.isPlayAvailable())
 			return this.isSpecAvailable();
-		} else {
-			return this.isPlayAvailable() || this.isSpecAvailable();
-		}
+		return true;
 	}
 
 	isSpecAvailable() {
