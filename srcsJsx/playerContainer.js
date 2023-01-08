@@ -15,19 +15,19 @@ var Player = function(props)
 var PlayerContainer = class extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = bmc.players;
+		this.state = BMC.plc;
 		this.events = {
 			me: (data) => {
-				bmc.players.me = data[0];
-				this.setState(bmc.players);
+				BMC.plc.me = data[0];
+				this.setState(BMC.plc);
 				// u.href.append("sessionToken", data[1]);
 			},
 			updatePlayers: (data) => {
 				console.log("udpate players");
-				_.merge(bmc.players.players, data);
-				bmc.players.show++ & 3;
-				this.setState(bmc.players);
-				ui.updateAdminRight(bmc.players.players[bmc.players.me].role == "admin");
+				_.merge(BMC.plc.players, data);
+				BMC.plc.show++ & 3;
+				this.setState(BMC.plc);
+				ui.updateAdminRight(BMC.plc.players[BMC.plc.me].role == "admin");
 			}
 		}
 	}

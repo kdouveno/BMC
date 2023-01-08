@@ -4,7 +4,7 @@ const socket = io("/", {
 	}
 });
 
-bmc = new ClientBMC();
+BMC = new ClientBMC();
 var playerList = <PlayerContainer />
 
 $(document).ready(function(){
@@ -61,7 +61,7 @@ function playerUpdate() {
 	socket.emit("playerUpdate", obj);
 }
 function settingsUpdate() {
-	if (bmc.players.players[bmc.players.me].role == "admin") {
+	if (BMC.plc.players[BMC.plc.me].role == "admin") {
 		var obj = KDform.objForm("#gameSettings");
 		console.log(obj);
 		socket.emit("settingsUpdate", obj);

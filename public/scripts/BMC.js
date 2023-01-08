@@ -11,7 +11,7 @@ var localDecks = function(){
 
 class ClientBMC {
 	constructor(){
-		this.players = {
+		this.plc = { // playerContainer
 			players: {},
 			me: "",
 			show: 0
