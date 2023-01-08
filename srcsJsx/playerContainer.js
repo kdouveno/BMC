@@ -12,33 +12,22 @@ var Player = function(props)
 	);
 }
 
-var ExternPlayersState;
-
 var PlayerContainer = class extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			players: {},
-			me: "",
-			show: 0
-		}
-		ExternPlayersState = this.state;
+		this.state = bmc.players;
 		this.events = {
 			me: (data) => {
-				console.log("me: " + data);
-				this.state.me = data[0];
-				this.setState(this.state);
+				bmc.players.me = data[0];
+				this.setState(bmc.players);
 				// u.href.append("sessionToken", data[1]);
 			},
 			updatePlayers: (data) => {
-				console.log(data);
-				_.merge(this.state.players, data);
-				this.state.show++ & 3;
-				this.setState(this.state);
-
-				console.log(this.state.players, this.state.me, this.state.players[this.state.me]);
-				
-				ui.updateAdminRight(this.state.players[this.state.me].role == "admin");
+				console.log("udpate players");
+				_.merge(bmc.players.players, data);
+				bmc.players.show++ & 3;
+				this.setState(bmc.players);
+				ui.updateAdminRight(bmc.players.players[bmc.players.me].role == "admin");
 			}
 		}
 	}
@@ -51,6 +40,7 @@ var PlayerContainer = class extends React.Component {
 	}
 	render() { 
 		var i = 0;
+		console.log("render : ", this.state);
 		return <div id="usersContainer">
 				<div id="playersContainer" >
 					<div className="title">
@@ -75,9 +65,8 @@ var PlayerContainer = class extends React.Component {
 						})
 					}
 					</div>
-				</div>;
+				</div>
 			</div>
-		return 
 	}
 }
  
