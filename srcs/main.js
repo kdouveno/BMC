@@ -21,7 +21,7 @@ io.sockets.on("connection", function(socket){
 	var userId = socket.handshake.query.userId;
 	var tmp;
 	console.log("Io connection");
-	
+
 	if (u.isndef(BMCs.users[userId])) {
 		console.log("New User Created");
 		tmp = new User();

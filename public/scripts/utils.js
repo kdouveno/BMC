@@ -11,6 +11,13 @@ var u = {
 		}
 		return out;
 	},
+	multiply(t, n) {
+		var out = [];
+		for(var i = 0; i < n; i++){
+			out.push(...t);
+		}
+		return out;
+	},
 	registerEvents: function(soc, fxsObject) {
 		Object.keys(fxsObject).forEach(function(o) {
 			soc.on(o, function(data){

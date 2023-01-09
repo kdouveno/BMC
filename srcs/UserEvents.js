@@ -8,20 +8,11 @@ module.exports = {
 		if (u.isndef(session)) { // if given session id doesn't already exist 
 			var room = BMCs.rooms[data.token]; // fecth room via roomToken
 			if (u.isndef(room)) { // and so doesn't given room id
-				try {
 					room = new Room(data.token); //create room and session
 					room.join(new Session(s, room, data));
-				} catch (e) {
-					delete room;
-					notif(s, e);
-				}
 			} else  // if the session doesn't exist but the room deos
 				if (room.hasRoom(data.spectator)){
-					try {
-						room.join(new Session(s, room, data)); // try joining it
-					} catch (e) {
-						notif(s, e);
-					}
+					room.join(new Session(s, room, data)); // try joining it
 				}
 		} else {
 			if (session.user == s.bmc_user) { //if given session exist and socket's user owns it
@@ -65,5 +56,19 @@ module.exports = {
 		} else {
 			notif(s, "You have no permission to change settings.");
 		}
+	},
+	addDeck: function(data, s){
+		var room = s.bmcSession.room; // RoomCards
+
+		room.cards.addDeck(data, ()=>{
+		console.log("test");
+
+			room.cards.updateDecks();
+		})
+	},
+	setMultiplier: function(data, s){
+		var room = s.bmcSession.room;
+		room.cards.setMultiplier(data.code5, parseInt(data.value.replace(/[^0-9]+/g, "")));
+		room.cards.updateDecks();
 	}
 }

@@ -20,6 +20,7 @@
 		<script src="scripts/BMC.js"></script>
 		<script src="scripts/jscolor.js"></script>
 		<script src="scripts/jsx/playerContainer.js"></script>
+		<script src="scripts/jsx/decksContainer.js"></script>
 		<script src="scripts/utils.js"></script>
 		<script src="scripts/socketEvents.js"></script>
 		<script src="scripts/login.js"></script>
@@ -160,37 +161,7 @@
 						<h2>Decks</h2>
 						<form id="decks">
 							<fieldset disabled  class="modOnly" class="modOnly">
-								<table>
-									<tr>
-										<th>CODE5</th>
-										<th>Count</th>
-										<th>Name</th>
-										<th>Calls</th>
-										<th>Responses</th>
-									</tr>
-									<tr id="deckAdd">
-										<td><input placeholder="CODE5" oninput="decode(this)" style="width: 5em;"></td>
-										<td>
-											<div tabindex="0" class="button inputPlus noselect" onclick="addDeck()">
-												<div>
-													<div>Add</div>
-												</div>
-												<div class="hover">
-													<div>Add</div>
-												</div>
-											</div>
-										</td>
-										<td colspan=3 style="text-align: center">---</td>
-									</tr>
-								</table>
-								<div tabindex="0" class="button inputPlus noselect" onclick="updateDecks()">
-									<div>
-										<div>UPDATE</div>
-									</div>
-									<div class="hover">
-										<div>UPDATE</div>
-									</div>
-								</div>
+								<div id="deckContainer"></div>
 							</fieldset  class="modOnly">
 						</form>
 						<h2>UI Settings</h2>

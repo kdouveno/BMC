@@ -3,7 +3,8 @@ const u		= require("../public/scripts/utils.js");
 const _		= require("../public/scripts/lodash.js");
 const Deck	= require("./Deck.js");
 class Cards {
-	constructor(){
+	constructor(room){
+		this.room = room;
 		this.busy = false;			// true while loading decks
 		this.decks = [];			// the List of decks that defines all the indexes must not change while in-game
 		this.callStock = [];
@@ -12,19 +13,47 @@ class Cards {
 		this.resWaste = [];
 	}
 
-	addDeck(code5){
-		if(this.decks.find(o=>o.code5 = code5))
+	addDeck(code5, callback){
+		if(this.decks.find(o=>o.code5 == code5))
 			return ;
 		this.busy = true;
 		new Deck(code5, (self)=>{
 			this.decks.push(self);
 			this.busy = false;
+			callback();
 		});
 	}
 
+	setCallMultiplier(code5, m){
+		var deck = this.decks.find(o=>o.code5 = code5);
+		if (deck)
+			deck.callMultiplier = m;
+	}
+
+	setResMultiplier(code5, m){
+		var deck = this.decks.find(o=>o.code5 = code5);
+		if (deck)
+			deck.resMultiplier = m;
+	}
+	
+	setMultiplier(code5, m){
+		this.setCallMultiplier(code5, m);
+		this.setResMultiplier(code5, m);
+	}
+
+	getCallCard(Cardi_b){
+		return this.decks[Cardi_b[0]].deck.calls[Cardi_b[1]];
+	}
+	getResCard(Cardi_b){
+		return this.decks[Cardi_b[0]].deck.res[Cardi_b[1]];
+	}
+
 	init(){
-		u.shuffle(this.decks.map((d, i)=>d.getCallStock().map(c=>[i, c])));
-		u.shuffle(this.decks.map((d, i)=>d.getResStock().map(c=>[i, c])));
+		u.shuffle(this.decks.map((d, i)=>u.multiply(d.getCallStock().map(c=>[i, c]), d.callMultiplier)));
+		u.shuffle(this.decks.map((d, i)=>u.multiply(d.getResStock().map(c=>[i, c]), d.resMultiplier)));
+	}
+	updateDecks(){
+		BMCs.io.in(this.room.id).emit("updateDecks", this.decks);
 	}
 }
 module.exports = class Room {
@@ -48,7 +77,7 @@ module.exports = class Room {
 			// SpectatorPeak: false,
 			kickAfks: true,
 		};
-		this.cards = new Cards();
+		this.cards = new Cards(this);
 		this.gameData = {
 			ingame: false,
 			plOrder: []
@@ -160,6 +189,9 @@ module.exports = class Room {
 	updateSettings(settings) {
 		this.checkSettings(settings);
 		_.merge(this.settings, settings);
-		io.to(this.id).emit("updateSettings", this.settings);
+		BMCs.io.to(this.id).emit("updateSettings", this.settings);
+	}
+	emit(name, data){
+		BMCs.io.to(this.id).emit(name, data);
 	}
 }
