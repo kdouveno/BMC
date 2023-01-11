@@ -79,7 +79,8 @@ var u = {
 			}
 			history.pushState({}, '', href);
 		}
-	}
+	},
+	gebid: (id) => document.getElementById(id)
 }
 
 if (typeof(module) !== "undefined")

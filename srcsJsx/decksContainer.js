@@ -52,7 +52,7 @@ var DeckContainer = class extends React.Component {
 	}
 
 	addDeck(e){
-		e = document.getElementById("addDeck").value;
+		e = u.gebid("addDeck").value;
 		if (e.replace(/[0-9A-Z]{5}?/, "") == ""){
 			socket.emit("addDeck", e);
 		}

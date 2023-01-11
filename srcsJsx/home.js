@@ -5,14 +5,13 @@ const socket = io("/", {
 });
 
 BMC = new ClientBMC();
-var playerList = <PlayerContainer />
-var deckList = <DeckContainer />
 
 $(document).ready(function(){
 	KDformInit();
 	u.registerEvents(socket, socketEvents);
-	ReactDOM.render(playerList, document.getElementById("userScrollContent"));
-	ReactDOM.render(deckList, document.getElementById("deckContainer"));
+	ReactDOM.render(<PlayerContainer />, u.gebid("userScrollContent"));
+	ReactDOM.render(<DeckContainer />, u.gebid("deckContainer"));
+	ReactDOM.render(<HandContainer />, u.gebid("handScrollContent"));
 	var query = u.getUrlVars();
 	u.assignForm("login", query);
 	if (query.direct)

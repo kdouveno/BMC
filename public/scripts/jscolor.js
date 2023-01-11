@@ -90,7 +90,7 @@ var jsc = {
 
 
 	fetchElement : function (mixed) {
-		return typeof mixed === 'string' ? document.getElementById(mixed) : mixed;
+		return typeof mixed === 'string' ? u.gebid(mixed) : mixed;
 	},
 
 
@@ -1721,7 +1721,7 @@ var jsc = {
 		// Find the target element
 		if (typeof targetElement === 'string') {
 			var id = targetElement;
-			var elm = document.getElementById(id);
+			var elm = u.gebid(id);
 			if (elm) {
 				this.targetElement = elm;
 			} else {
