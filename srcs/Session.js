@@ -18,14 +18,17 @@ module.exports = class Session{
 			points: 0
 		};
 		this.hand = [];
-		try{
+		this.info = {};
+		try {
 			this.setInfos(info);
-		} catch (e){
-			notif(s, e);
+		} catch (e) {
+			console.log("error setInfos");
+			console.log(e);
+			throw e;
 		}
-
 		BMCs.sessions[this.uuid] = this;
 		socket.bmcUser.sessions.set(this.uuid, this);
+		console.log("Saucisse");
 		socket.bmcSession = this;
 	}
 
@@ -34,19 +37,26 @@ module.exports = class Session{
 		if (typeof(info.displayName) !== "string" && typeof(info.color) !== "string")
 			throw "Some input aren't of the good type. Are you trying to mess with us?";
 		if (info.displayName.length < 1 & info.displayName.length <= 15)
-			toThrow.push("DisplayName must be 1 character long minimum.");
+			toThrow.push("DisplayName must be 1 to 15 characters long. Is " + info.displayName.length + "long.");
 		if (info.color !== "" && !u.strictTest(info.color, /[0-9a-fA-F]{6}/))
 			toThrow.push("Color must be an hexadecimal color code");
 		if (toThrow.length) {
-			console.log("sauce");
 			throw toThrow;
 		}
 	}
 	setInfos(info) {
 		this.checkInfo(info);
+		var name = info.displayName;
+		if (name)
+			name = info.displayName.replace(/\s{2,}/g, " ").trim();
+		else if (!this.gameData.displayName)
+			name = "User " + (this.room.sessions.size() + this.room.specSessions.size());
+		else
+			name = this.gameData.displayName;
+
 		this.gameData.info = {
-			displayName: info.displayName,
-			color: (info.color == "" ? this.gameData.info.color : info.color)
+			displayName: name,
+			color: (info.color ?? (this.gameData.info.color ?? "F0F0F0"))
 		}
 		if (u.isndef(this.refInfo))
 			this.gameData.refInfo = Object.assign(this.gameData.refInfo, this.gameData.info);

@@ -5,14 +5,24 @@ const Session		= require("./Session.js");
 module.exports = {
 	knockRoom: function(data, s) { // optimisation
 		var session = BMCs.sessions[data.sessionToken] // fecth session via session token
-		if (u.isndef(session)) { // if given session id doesn't already exist 
+		if (u.isndef(session)) { // if given session id doesn't already exist
 			var room = BMCs.rooms[data.token]; // fecth room via roomToken
 			if (u.isndef(room)) { // and so doesn't given room id
+				try {
 					room = new Room(data.token); //create room and session
-					room.join(new Session(s, room, data));
+					session = new Session(s, room, data);
+					room.join(session);
+				} catch (e) {
+					console.log(e);
+				}
 			} else  // if the session doesn't exist but the room deos
 				if (room.hasRoom(data.spectator)){
-					room.join(new Session(s, room, data)); // try joining it
+					try {
+						session = new Session(s, room, data);
+						room.join(session); // try joining it
+					} catch (e) {
+						console.log(e);
+					}
 				}
 		} else {
 			if (session.user == s.bmc_user) { //if given session exist and socket's user owns it
