@@ -3,6 +3,12 @@
 	outline-width: 0px;
 }
 
+@media screen and (min-resolution: 300dpi) {
+	#uiContainer{
+		font-size: 2em;
+	}
+}
+
 body{
 	--bc: #272727;
 	--pc: #ededed;
@@ -15,6 +21,7 @@ body{
 	background-color: var(--bc);
 	color: var(--pc);
 	font-family: "Arial";
+	overflow: hidden;
 }
 *::selection{
 	background: var(--pc);

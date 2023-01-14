@@ -1,23 +1,36 @@
 #uiContainer{
-	display: flex;
-	justify-content: stretch;
-}
-#uiContainer>div{
-	width: 300px;
+	width: 100vw;
 	height: 100vh;
+	overflow: hidden;
+	--panel-width: 20em;
 }
-.rightPanel{
-	border-left: 2px solid var(--pc);
+#uiWrapper {
+	height: 100vh;
+	width: 100vw;
+	display: grid;
+	grid-template: "a b c" 1fr / 1fr var(--panel-width) var(--panel-width);
 }
-.rightPanel.hidden{
-	position: fixed;
-	transform: translateX(100vw);
+@media screen and (max-aspect-ratio: 4/3){
+
+	#uiWrapper{
+		width: calc(100vw + var(--panel-width) + 1px);
+		grid-template:	"a c" 1fr
+		"b c" var(--panel-width) / 1fr var(--panel-width)
+	}
 }
-.rightPanel.hidden.shown{
-	transform: translateX(calc(100vw - 300px));
+#uiWrapper>div{
+	outline: 1px solid white;
 }
+
 #board{
 	flex: 1;
+	grid-area: a;
+}
+#hand{
+	grid-area: b;
+}
+#users{
+	grid-area: c;
 }
 .title{
 	background-color: var(--pc);

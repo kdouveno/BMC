@@ -11,7 +11,6 @@ $(document).ready(function(){
 	u.registerEvents(socket, socketEvents);
 	ReactDOM.render(<PlayerContainer />, u.gebid("userScrollContent"));
 	ReactDOM.render(<DeckContainer />, u.gebid("deckContainer"));
-	ReactDOM.render(<HandContainer />, u.gebid("handScrollContent"));
 	var query = u.getUrlVars();
 	u.assignForm("login", query);
 	if (query.direct)

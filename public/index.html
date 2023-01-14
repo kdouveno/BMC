@@ -179,45 +179,47 @@
 			</div>
 		</div>
 		<div id="uiContainer">
-			<div id="board">
-				<div class="title nav">
-					<h2>Board</h2>
-					<div class="navLogos">
-						<svg viewBox="0 0 300 300" style="fill: transparent; stroke: var(--bc); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round" onclick="$('#menuContainer').addClass('shown')">
-							<!--<rect x="10" y="10" rx="25" height="280" width="280" style="stroke-width: 2vh"/>-->
-							<def>
-								<path id="circle" d="m -20 0 a 1 1 0 0 0 40 0 a 1 1 1 0 0 -40 0"/>
-								<use id="cc" href="#circle" transform="scale(2 2)"/>
-								<use id="c1" href="#circle" x="100" y="70"/>
-								<use id="c2" href="#circle" x="190" y="150"/>
-								<use id="c3" href="#circle" x="140" y="230"/>
-
-							</def>
-							<clipPath id="clip" style="clip-rule: evenodd;" class="m">
-								<path d="	M 0 0 h 300 v 300 h -300 Z
-											M 100 70  m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
-											M 190 150 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
-											M 140 230 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z"/>
-							</clipPath>
-							<use xlink:href="#c1" class="m"/>
-							<use xlink:href="#c2" class="m"/>
-							<use xlink:href="#c3" class="m"/>
-							<path d="M 70 70 h 160 m -160 80 h 160 m -160 80 h 160" style="clip-path: url(#clip)"/>
-						</svg>
+			<div id="uiWrapper">
+				<div id="board">
+					<div class="title nav">
+						<h2>Board</h2>
+						<div class="navLogos">
+							<svg viewBox="0 0 300 300" style="fill: transparent; stroke: var(--bc); stroke-width: 15; stroke-linecap: round; stroke-linejoin: round" onclick="$('#menuContainer').addClass('shown')">
+								<!--<rect x="10" y="10" rx="25" height="280" width="280" style="stroke-width: 2vh"/>-->
+								<def>
+									<path id="circle" d="m -20 0 a 1 1 0 0 0 40 0 a 1 1 1 0 0 -40 0"/>
+									<use id="cc" href="#circle" transform="scale(2 2)"/>
+									<use id="c1" href="#circle" x="100" y="70"/>
+									<use id="c2" href="#circle" x="190" y="150"/>
+									<use id="c3" href="#circle" x="140" y="230"/>
+	
+								</def>
+								<clipPath id="clip" style="clip-rule: evenodd;" class="m">
+									<path d="	M 0 0 h 300 v 300 h -300 Z
+												M 100 70  m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
+												M 190 150 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z
+												M 140 230 m -40 0 a 1 1 0 0 0 80 0 a 1 1 1 0 0 -80 0 Z"/>
+								</clipPath>
+								<use xlink:href="#c1" class="m"/>
+								<use xlink:href="#c2" class="m"/>
+								<use xlink:href="#c3" class="m"/>
+								<path d="M 70 70 h 160 m -160 80 h 160 m -160 80 h 160" style="clip-path: url(#clip)"/>
+							</svg>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="hand" class="rightPanel">
-				<div class="title">
-					<h2>Hand</h2>
+				<div id="hand" class="rightPanel">
+					<div class="title">
+						<h2>Hand</h2>
+					</div>
 				</div>
-			</div>
-			<div id="users" class="rightPanel">
-				<div class="title">
-					<h2>Online Users</h2>
-				</div>
-				<div id="userScrollContent" data-simplebar>
-					
+				<div id="users" class="rightPanel">
+					<div class="title">
+						<h2>Online Users</h2>
+					</div>
+					<div id="userScrollContent">
+						
+					</div>
 				</div>
 			</div>
 		</div>
