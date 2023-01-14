@@ -17,9 +17,13 @@
 		grid-template:	"a c" 1fr
 		"b c" var(--panel-width) / 1fr var(--panel-width)
 	}
+	#users.shown{
+		transform: translateX(calc((var(--panel-width) + 1px) * -1));
+	}
 }
 #uiWrapper>div{
 	outline: 1px solid white;
+	background-color: var(--bc);
 }
 
 #board{
@@ -31,7 +35,9 @@
 }
 #users{
 	grid-area: c;
+	transition: transform calc(.5s * var(--at)) var(--tf);
 }
+
 .title{
 	background-color: var(--pc);
 	color: var(--bc);

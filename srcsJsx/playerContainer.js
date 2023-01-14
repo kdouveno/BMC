@@ -69,4 +69,7 @@ var PlayerContainer = class extends React.Component {
 			</div>
 	}
 }
- 
+
+toggleUsersView = function(){
+	$("#users").toggleClass("shown");
+}
