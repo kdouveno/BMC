@@ -22,6 +22,7 @@ body{
 	color: var(--pc);
 	font-family: "Arial";
 	overflow: hidden;
+	transform: scale(.8);
 }
 *::selection{
 	background: var(--pc);

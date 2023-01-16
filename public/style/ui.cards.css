@@ -1,0 +1,35 @@
+#handContent>.wrapper{
+	display: grid;
+	grid-template-columns: repeat(calc(var(--pw) / 10), 1fr);
+	grid-auto-rows: auto;
+	grid-gap: 2px;
+	padding: 2px;
+	--pc: #efefef
+}
+@media screen and (max-aspect-ratio: 4/3){
+	#handContent{
+		overflow-y: hidden;
+		overflow-x: scroll;
+	}
+	#handContent>.wrapper{
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		align-items: stretch;
+		height: 100%;
+	}
+	#handContent>.wrapper>div{
+		
+	}
+}
+.card{
+	border: 1px solid var(--pc);
+	padding: 10px;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border-top-width: 5px;
+	max-width: calc(var(--panel-width) / 2);
+
+	/* background-color: var(--pc); */
+	/* color: var(--bc); */
+}

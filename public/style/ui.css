@@ -2,28 +2,53 @@
 	width: 100vw;
 	height: 100vh;
 	overflow: hidden;
-	--panel-width: 20em;
+	--pw: 20;
+	--panel-width: calc(var(--pw) * 1em);
+	background-color: var(--pc);
 }
 #uiWrapper {
 	height: 100vh;
 	width: 100vw;
 	display: grid;
 	grid-template: "a b c" 1fr / 1fr var(--panel-width) var(--panel-width);
+	grid-gap: 1px;
 }
 @media screen and (max-aspect-ratio: 4/3){
 
 	#uiWrapper{
 		width: calc(100vw + var(--panel-width) + 1px);
 		grid-template:	"a c" 1fr
-		"b c" var(--panel-width) / 1fr var(--panel-width)
+						"b c" var(--panel-width) / 1fr var(--panel-width);
 	}
 	#users.shown{
 		transform: translateX(calc((var(--panel-width) + 1px) * -1));
 	}
+	#uiWrapper>div>.content {
+		overflow-x: scroll;
+
+	}
+
 }
 #uiWrapper>div{
-	outline: 1px solid white;
 	background-color: var(--bc);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+#uiWrapper>div>.content {
+	overflow-y: scroll;
+
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+#uiWrapper>div>.content::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+#uiWrapper>div>.content{
+	flex-grow: 1;
+	min-height: 0;
 }
 
 #board{

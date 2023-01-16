@@ -9,7 +9,7 @@ BMC = new ClientBMC();
 $(document).ready(function(){
 	KDformInit();
 	u.registerEvents(socket, socketEvents);
-	ReactDOM.render(<PlayerContainer />, u.gebid("userScrollContent"));
+	ReactDOM.render(<PlayerContainer />, u.gebid("userContent"));
 	ReactDOM.render(<DeckContainer />, u.gebid("deckContainer"));
 	var query = u.getUrlVars();
 	u.assignForm("login", query);
