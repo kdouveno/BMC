@@ -33,7 +33,7 @@
 	--pc: #ff3030;
 	--delay: 0s;
 	box-sizing: border-box;
-	margin: 2px;
+	margin: var(--padding);
 	width: calc(100% - 4px);
 	border: 1px solid var(--pc);
 	border-left-width: 5px;

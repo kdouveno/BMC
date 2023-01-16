@@ -4,6 +4,7 @@
 	overflow: hidden;
 	--pw: 20;
 	--panel-width: calc(var(--pw) * 1em);
+	--padding: 7px;
 	background-color: var(--pc);
 }
 #uiWrapper {
@@ -13,22 +14,7 @@
 	grid-template: "a b c" 1fr / 1fr var(--panel-width) var(--panel-width);
 	grid-gap: 1px;
 }
-@media screen and (max-aspect-ratio: 4/3){
 
-	#uiWrapper{
-		width: calc(100vw + var(--panel-width) + 1px);
-		grid-template:	"a c" 1fr
-						"b c" var(--panel-width) / 1fr var(--panel-width);
-	}
-	#users.shown{
-		transform: translateX(calc((var(--panel-width) + 1px) * -1));
-	}
-	#uiWrapper>div>.content {
-		overflow-x: scroll;
-
-	}
-
-}
 #uiWrapper>div{
 	background-color: var(--bc);
 	display: flex;
@@ -89,4 +75,21 @@
 
 .navLogos>svg{
 	height: 100%;
+}
+
+@media screen and (max-aspect-ratio: 4/3){
+
+	#uiWrapper{
+		width: calc(100vw + var(--panel-width) + 1px);
+		grid-template:	"a c" 1fr
+						"b c" var(--panel-width) / 1fr var(--panel-width);
+	}
+	#users.shown{
+		transform: translateX(calc((var(--panel-width) + 1px) * -1));
+	}
+	#uiWrapper>div>.content {
+		overflow-y: hidden;
+		overflow-x: scroll;
+	}
+
 }

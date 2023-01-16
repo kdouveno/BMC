@@ -1,0 +1,17 @@
+#call {
+	font-size: 1.5em;
+	background: radial-gradient(ellipse at top, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 100%);
+	text-align: center;
+	padding: 10px 20%;
+}
+#board .card{
+	border-bottom-width: 5px;
+	border-left-width: 1px;
+	background-color: black;
+	text-align: center;
+	padding: 10px;
+	font-size: 1.2em;
+}
+#boardContent {
+	padding: var(--padding);
+}
